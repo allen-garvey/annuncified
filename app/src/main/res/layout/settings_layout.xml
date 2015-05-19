@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:orientation="vertical"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent">
+
+    <TableLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="10dp">
+
+        <Switch
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/settings_toggle_sms_listener_switch"
+            android:id="@+id/switch1"
+            android:layout_gravity="right"
+            android:layout_column="13"
+            android:showText="true"
+            android:enabled="true"
+            android:checked="false"/>
+    </TableLayout>
+
+</LinearLayout>
