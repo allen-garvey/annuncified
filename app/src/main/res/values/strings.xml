@@ -4,32 +4,36 @@
     <!-- Strings used app wide-->
     <string name="app_name">Annuncified</string>
 
-    <string name="start_button">Toggle SMS Listener</string>
+    <!-- Strings used in main menu layout-->
+    <string name="change_notification_sounds_button">Set Notification Sounds</string>
+    <string name="settings_button">Settings</string>
+    <string name="help_button">Help</string>
+
+    <!-- Strings used in help layout-->
+    <string name="about_button">About Annuncified</string>
     <string name="help_text">To avoid multiple notification sounds playing when you get a SMS message, set your notification sound to none in
     your device main settings.\n\nIf you have not set a custom notification sound for a contact, the default notification sound will be played.</string>
+
+    <!-- Strings used in about layout-->
     <string name="about_text">Annuncified &#169;2015 Allen Garvey\nReleased under the MIT License</string>
 
-    <string name="change_notification_sounds_button">Set Notification Sounds</string>
-    <string name="help_button">Help</string>
-    <string name="settings_button">Settings</string>
-    <string name="about_button">About Annuncified</string>
-
+    <!-- Strings used in settings layout-->
     <string name="settings_toggle_sms_listener_switch">Listen for texts</string>
     <string name="ignore_texts_from_non_contacts_switch">Silence texts from non-contacts</string>
 
+    <!-- Strings used in change notifications layout-->
     <string name="default_notificaton_text">Default notification sound:</string>
     <string name="custom_notification_text">Set notification sounds per contact</string>
 
+    <!-- Strings used in custom contact notifications layout-->
+    <string name="contact_notification_sound_not_set_text">default sound</string>
+    <string name="silent_ringtone_text">Silent</string>
 
-
+    
     <!-- Shared preferences keys-->
     <string name="ignore_texts_from_non_contacts_key">The key for if texts from non-contacts should be ignored</string>
     <string name="silent_ringtone_key">The key for silent ringtone option</string>
-    <string name="silent_ringtone_text">Silent</string>
-    <string name="contact_notification_sound_not_set_text">default sound</string>
     <string name="default_contact_notification_sound_key">The key that the contact should play the default sound</string>
-
-    <!--Shared preferences keys-->
     <string name="receiver_state_shared_preferences_key">SMSReceiver on off state key</string>
     <string name="default_notification_sound_uri_shared_preferences_key">Default notification sound uri key</string>
 </resources>
