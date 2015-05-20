@@ -5,15 +5,13 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.database.Cursor;
-import android.media.Ringtone;
-import android.media.RingtoneManager;
+import android.media.AudioManager;
+import android.media.MediaPlayer;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.ContactsContract;
 import android.telephony.SmsMessage;
 import android.util.Log;
-
-import java.io.IOException;
 
 /**
  * Created by Allen X on 5/15/15.
@@ -77,8 +75,16 @@ public class SMSReceiver extends BroadcastReceiver{
             ringtoneUri = NotifyUtil.uriFromPath(ringtonePath);
         }
 
-        Ringtone notificationTone = RingtoneManager.getRingtone(context, ringtoneUri);
-        notificationTone.play();
+        //use mediaplayer instead of ringtone to play sound because Moto e has ringtones fade in, while notifications play at full volume
+        try{
+            MediaPlayer player = new MediaPlayer();
+            player.setAudioStreamType(AudioManager.STREAM_NOTIFICATION);
+            player.setDataSource(context, ringtoneUri);
+            player.prepare();
+            player.setLooping(false);
+            player.start();
+        }
+        catch(Exception e){}
     }
 
 
