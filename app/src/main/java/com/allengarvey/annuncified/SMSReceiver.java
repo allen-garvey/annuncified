@@ -13,20 +13,14 @@ import android.provider.ContactsContract;
 import android.telephony.SmsMessage;
 import android.util.Log;
 
-/**
- * Created by Allen X on 5/15/15.
- */
 public class SMSReceiver extends BroadcastReceiver{
-
-    private SharedPreferences preferences;
-
 
     @Override
     public void onReceive(Context context, Intent intent) {
 
         if(intent.getAction().equals("android.provider.Telephony.SMS_RECEIVED")){
             Bundle bundle = intent.getExtras();           //---get the SMS message passed in---
-            SmsMessage[] msgs = null;
+            SmsMessage[] msgs;
             String msg_from = "";
             String contactName = "";
             String contactID = "";
@@ -65,7 +59,7 @@ public class SMSReceiver extends BroadcastReceiver{
     private void playRingtone(Context context, String contactID){
         String ringtonePath = NotifyUtil.notificationSoundPathFromContactsID(context, contactID);
         Uri ringtoneUri;
-        if(ringtonePath.equals(context.getString(R.string.silent_ringtone_key))){
+        if(ringtonePath.equals(context.getString(R.string.silent_ringtone_key)) || (contactID.equals("") && NotifyUtil.getIgnoreTextsFromNonContactsSetting(context))){
             return;
         }
         if(ringtonePath.equals(NotifyUtil.NOT_FOUND) || ringtonePath.equals(context.getString(R.string.default_contact_notification_sound_key))){

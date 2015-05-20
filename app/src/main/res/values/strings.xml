@@ -1,11 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
+    <!-- Strings used app wide-->
     <string name="app_name">Annuncified</string>
+
     <string name="start_button">Toggle SMS Listener</string>
-    <string name="action_settings">Settings</string>
-
-
     <string name="help_text">To avoid multiple notification sounds playing when you get a SMS message, set your notification sound to none in
     your device main settings.\n\nIf you have not set a custom notification sound for a contact, the default notification sound will be played.</string>
     <string name="about_text">Annuncified &#169;2015 Allen Garvey\nReleased under the MIT License</string>
@@ -16,11 +15,15 @@
     <string name="about_button">About Annuncified</string>
 
     <string name="settings_toggle_sms_listener_switch">Listen for texts</string>
+    <string name="ignore_texts_from_non_contacts_switch">Silence texts from non-contacts</string>
 
     <string name="default_notificaton_text">Default notification sound:</string>
     <string name="custom_notification_text">Set notification sounds per contact</string>
 
 
+
+    <!-- Shared preferences keys-->
+    <string name="ignore_texts_from_non_contacts_key">The key for if texts from non-contacts should be ignored</string>
     <string name="silent_ringtone_key">The key for silent ringtone option</string>
     <string name="silent_ringtone_text">Silent</string>
     <string name="contact_notification_sound_not_set_text">default sound</string>
