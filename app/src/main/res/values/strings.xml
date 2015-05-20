@@ -29,7 +29,7 @@
     <string name="contact_notification_sound_not_set_text">default sound</string>
     <string name="silent_ringtone_text">Silent</string>
 
-    
+
     <!-- Shared preferences keys-->
     <string name="ignore_texts_from_non_contacts_key">The key for if texts from non-contacts should be ignored</string>
     <string name="silent_ringtone_key">The key for silent ringtone option</string>

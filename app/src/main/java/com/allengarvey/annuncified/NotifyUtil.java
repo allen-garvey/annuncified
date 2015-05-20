@@ -4,21 +4,38 @@ import android.content.ComponentName;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
-import android.database.Cursor;
 import android.media.Ringtone;
 import android.media.RingtoneManager;
 import android.net.Uri;
 import android.preference.PreferenceManager;
-import android.provider.ContactsContract;
 import android.provider.Settings;
 
 
 public class NotifyUtil{
-
+    //////////////////////////
+    // constants
+    //////////////////////////
     public static final int receiverDefaultState = PackageManager.COMPONENT_ENABLED_STATE_ENABLED;
     public static final String contactInfoSharedPreferencesName = "Annuncified contact info notification sounds shared preferences name";
     public static final String NOT_FOUND = "This is the string you receive if for some reason the value is not stored in shared preferences.";
 
+
+    ////////////////////////////////////////////////////////////
+    // get shared preferences object helper methods
+    ////////////////////////////////////////////////////////////
+
+    public static SharedPreferences getSharedPreferences(Context app){
+        return PreferenceManager.getDefaultSharedPreferences(app);
+    }
+
+    public static SharedPreferences getContactInfoSharedPreferences(Context app){
+        return app.getSharedPreferences(contactInfoSharedPreferencesName, Context.MODE_PRIVATE);
+    }
+
+
+    ////////////////////////////////////////////////////////////
+    // get and set methods for stored shared preferences values
+    ////////////////////////////////////////////////////////////
 
     //receiverState is PackageManager.COMPONENT_ENABLED_STATE_ENABLED
     //or PackageManager.COMPONENT_ENABLED_STATE_DISABLED
@@ -36,13 +53,7 @@ public class NotifyUtil{
     public static void setIgnoreTextsFromNonContactsSetting(Context app, boolean newSetting){
         NotifyUtil.getSharedPreferences(app).edit().putBoolean(app.getString(R.string.ignore_texts_from_non_contacts_key), newSetting).apply();
     }
-    public static SharedPreferences getSharedPreferences(Context app){
-        return PreferenceManager.getDefaultSharedPreferences(app);
-    }
 
-    public static SharedPreferences getContactInfoSharedPreferences(Context app){
-        return app.getSharedPreferences(contactInfoSharedPreferencesName, Context.MODE_PRIVATE);
-    }
 
     public static int getSMSReceiverStatePreferences(Context app){
         return getSharedPreferences(app).getInt(app.getString(R.string.receiver_state_shared_preferences_key), receiverDefaultState);
@@ -52,6 +63,10 @@ public class NotifyUtil{
         getSharedPreferences(app).edit().putInt(app.getString(R.string.receiver_state_shared_preferences_key), newReceiverState).apply();
     }
 
+
+    ////////////////////////////////////////////////////////////
+    // Get Ringtone Uris and ringtone name string helper methods
+    /////////////////////////////////////////////////////////////
 
     public static Uri getDefaultNotificationSound(Context app){
         String NOT_FOUND = "URI not in shared preferences";
