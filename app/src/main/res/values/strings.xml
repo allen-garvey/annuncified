@@ -17,7 +17,7 @@
     your device main settings.\n\nIf you have not set a custom notification sound for a contact, the default notification sound will be played.</string>
 
     <!-- Strings used in about layout-->
-    <string name="about_text">Annuncified &#169;2015 Allen Garvey\nReleased under the MIT License</string>
+    <string name="about_text">Annuncified &#169;2015 Allen Garvey\n\nReleased under the MIT License\ngithub.com/allen-garvey/annuncified</string>
 
     <!-- Strings used in settings layout-->
     <string name="settings_toggle_sms_listener_switch">Listen for texts</string>
