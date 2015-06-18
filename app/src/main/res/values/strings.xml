@@ -5,9 +5,11 @@
     <string name="app_name">Annuncified</string>
 
     <!-- Strings used in main menu layout-->
-    <string name="change_notification_sounds_button">Set Notification Sounds</string>
-    <string name="settings_button">Settings</string>
-    <string name="help_button">Help</string>
+    <string-array name="main_menu">
+        <item>Set Notification Sounds</item>
+        <item>Settings</item>
+        <item>Help</item>
+    </string-array>
 
     <!-- Strings used in help layout-->
     <string name="about_button">About Annuncified</string>
