@@ -1,31 +1,31 @@
 package com.allengarvey.annuncified;
 
 import android.app.Activity;
+import android.app.ListActivity;
 import android.content.Intent;
 import android.media.RingtoneManager;
 import android.net.Uri;
 import android.os.Bundle;
-import android.support.v7.app.ActionBarActivity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.Button;
+import android.widget.ArrayAdapter;
+import android.widget.ListView;
 
-/**
- * Created by Allen X on 5/15/15.
- */
-public class ChangeNotificationsActivity extends ActionBarActivity{
+public class ChangeNotificationsActivity extends ListActivity{
     //Declare UI elements
-    private Button defaultNotificationbutton;
+    private String[] menuList;
+    private ArrayAdapter<String>menuAdapter;
+    String defaultNotificationText;
 
     @Override
     protected void onCreate(Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.change_notifications_layout);
-        //Inflate UI
-        defaultNotificationbutton = (Button) findViewById(R.id.defaultNotificationbutton);
-
-        setDefaultDisplayButtonText(NotifyUtil.getDefaultNotificationSound(this));
+        menuList = new String[]{"", getResources().getString(R.string.custom_notification_text)};
+        menuAdapter = new ArrayAdapter<>(this, R.layout.wide_list_layout, R.id.list_item, menuList);
+        setListAdapter(menuAdapter);
+        defaultNotificationText = getResources().getString(R.string.default_notificaton_text);
+        setDefaultNotificationText(NotifyUtil.getDefaultNotificationSound(this));
     }
 
 
@@ -41,14 +41,12 @@ public class ChangeNotificationsActivity extends ActionBarActivity{
         // Handle action bar item clicks here. The action bar will
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
-
 
         return super.onOptionsItemSelected(item);
     }
 
 
-    public void setNotificationSound(View v){
+    public void setNotificationSound(){
         Intent intent = new Intent(RingtoneManager.ACTION_RINGTONE_PICKER);
         intent.putExtra(RingtoneManager.EXTRA_RINGTONE_TYPE, RingtoneManager.TYPE_NOTIFICATION);
         intent.putExtra(RingtoneManager.EXTRA_RINGTONE_TITLE, "Select Default Tone");
@@ -66,27 +64,36 @@ public class ChangeNotificationsActivity extends ActionBarActivity{
             Uri uri = intent.getParcelableExtra(RingtoneManager.EXTRA_RINGTONE_PICKED_URI);
 
             if (uri != null){
-                setDefaultDisplayButtonText(uri);
+                setDefaultNotificationText(uri);
                 NotifyUtil.getSharedPreferences(this).edit()
                         .putString(getString(R.string.default_notification_sound_uri_shared_preferences_key), uri.toString())
                         .apply();
-
             }
-
         }
     }
 
-    public void contactNotificationSoundsActivityLaunch(View v){
-        startActivity(new Intent(ChangeNotificationsActivity.this, ContactNotificationSoundsActivity.class));
 
+    @Override
+    protected void onListItemClick(ListView l, View v, int postion, long id){
+        switch(postion){
+            case 0:
+                setNotificationSound();
+                break;
+            default:
+                startActivity(new Intent(ChangeNotificationsActivity.this, ContactNotificationSoundsActivity.class));
+                break;
+        }
     }
 
-    private void setDefaultDisplayButtonText(Uri ringtoneUri){
-        setDefaultDisplayButtonText(NotifyUtil.ringtoneNameFromUri(this, ringtoneUri));
+
+
+    private void setDefaultNotificationText(Uri ringtoneUri){
+        setDefaultNotificationText(NotifyUtil.ringtoneNameFromUri(this, ringtoneUri));
     }
 
-    private void setDefaultDisplayButtonText(String ringtoneUriName){
-        defaultNotificationbutton.setText(ringtoneUriName);
+    private void setDefaultNotificationText(String ringtoneUriName){
+        menuList[0] = defaultNotificationText + "\n" + ringtoneUriName;
+        menuAdapter.notifyDataSetChanged();
     }
 
 
