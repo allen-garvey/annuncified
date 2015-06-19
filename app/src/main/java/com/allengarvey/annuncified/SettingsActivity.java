@@ -20,7 +20,11 @@ public class SettingsActivity extends ActionBarActivity{
     protected void onCreate(Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
         setContentView(R.layout.settings_layout);
+    }
 
+    @Override
+    protected void onResume(){
+        super.onResume();
         listenForTextsSwitch = (Switch) findViewById(R.id.listen_for_texts_switch);
         ignoreTextsFromNonContactsSwitch = (Switch) findViewById(R.id.ignore_texts_from_non_contacts_switch);
         ignoreCallsFromNonContactsSwitch = (Switch) findViewById(R.id.ignore_calls_from_non_contacts_switch);
@@ -47,11 +51,7 @@ public class SettingsActivity extends ActionBarActivity{
     }
 
 
-    @Override
-    protected void onResume(){
-        super.onResume();
-        init();
-    }
+
 
 
     public void switchChanged(View view){
