@@ -3,23 +3,37 @@
               android:orientation="vertical"
               android:layout_width="match_parent"
               android:layout_height="match_parent">
+<ScrollView
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <TableLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceMedium"
-        android:text="@string/help_text"
-        android:id="@+id/textView"
-        android:layout_marginLeft="10dp"
-        android:layout_marginTop="10dp"
-        android:layout_marginRight="10dp"
-        android:layout_marginBottom="60dp"/>
 
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/about_button"
-        android:id="@+id/button4"
-        android:layout_marginLeft="10dp"
-        android:onClick="aboutButtonAction"/>
+
+            <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:text="@string/help_text"
+            android:id="@+id/textView"
+            android:layout_marginLeft="20dp"
+            android:layout_marginTop="20dp"
+            android:layout_marginRight="20dp"
+            android:layout_marginBottom="80dp"/>
+
+
+
+            <Button
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/about_button"
+            android:id="@+id/button4"
+            android:onClick="aboutButtonAction"
+                />
+
+    </TableLayout>
+</ScrollView>
+
 </LinearLayout>
