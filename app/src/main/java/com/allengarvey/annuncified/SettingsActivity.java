@@ -1,7 +1,5 @@
 package com.allengarvey.annuncified;
 
-import android.app.AlertDialog;
-import android.content.DialogInterface;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
@@ -13,12 +11,9 @@ import android.widget.Switch;
 
 public class SettingsActivity extends ActionBarActivity{
     private int smsRecieverState;
-    private int callRecieverState;
     private Switch listenForTextsSwitch;
     private Switch ignoreTextsFromNonContactsSwitch;
-    private Switch listenForCallsSwitch;
     private Switch ignoreCallsFromNonContactsSwitch;
-    private Switch playCallsAtFullVolumeSwitch;
 
     @Override
     protected void onCreate(Bundle savedInstanceState){
@@ -27,9 +22,7 @@ public class SettingsActivity extends ActionBarActivity{
 
         listenForTextsSwitch = (Switch) findViewById(R.id.listen_for_texts_switch);
         ignoreTextsFromNonContactsSwitch = (Switch) findViewById(R.id.ignore_texts_from_non_contacts_switch);
-        listenForCallsSwitch = (Switch) findViewById(R.id.listen_for_calls_switch);
         ignoreCallsFromNonContactsSwitch = (Switch) findViewById(R.id.ignore_calls_from_non_contacts_switch);
-        playCallsAtFullVolumeSwitch = (Switch) findViewById(R.id.play_calls_at_full_volume_switch);
 
         init();
     }
@@ -66,60 +59,26 @@ public class SettingsActivity extends ActionBarActivity{
         else if(view == listenForTextsSwitch){
             saveSmsListenerToggleSwitchSetting();
         }
-        else if(view == ignoreCallsFromNonContactsSwitch){
-            saveIgnoreCallsFromNonContactsSetting();
-        }
-        else if(view == listenForCallsSwitch){
-            saveCallListenerToggleSwitchSetting();
-        }
         else{
-            confirmPlayRingtonesAtFullVolumeSwitchSetting();
+            saveIgnoreCallsFromNonContactsSetting();
         }
     }
 
     private void saveIgnoreCallsFromNonContactsSetting(){
-        boolean newSetting = ignoreCallsFromNonContactsSwitch.isChecked();
-        NotifyUtil.setIgnoreCallsFromNonContactsSetting(this, newSetting);
-    }
+        boolean ignoreCalls = ignoreCallsFromNonContactsSwitch.isChecked();
+        NotifyUtil.setIgnoreCallsFromNonContactsSetting(this, ignoreCalls);
 
-
-
-    private void showConfirmDialogue(final boolean newSetting){
-        DialogInterface.OnClickListener dialogClickListener = new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                switch (which){
-                    case DialogInterface.BUTTON_POSITIVE:
-                        savePlayRingtonesAtFullVolumeSwitchSetting(newSetting);
-                        break;
-
-                    case DialogInterface.BUTTON_NEGATIVE:
-                        playCallsAtFullVolumeSwitch.setChecked(false);
-                        break;
-                }
-            }
-        };
-
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setMessage(getResources().getString(R.string.setting_play_calls_at_full_volume_modal_warning)).setPositiveButton("Yes", dialogClickListener)
-                .setNegativeButton("No", dialogClickListener).show();
-    }
-
-    private void confirmPlayRingtonesAtFullVolumeSwitchSetting(){
-        final boolean newSetting = playCallsAtFullVolumeSwitch.isChecked();
-        if(newSetting){
-            //display modal dialogue confirming action
-            showConfirmDialogue(newSetting);
+        int callReceiverState;
+        if(ignoreCalls){
+            callReceiverState = PackageManager.COMPONENT_ENABLED_STATE_ENABLED;
         }
-        else{
-            savePlayRingtonesAtFullVolumeSwitchSetting(newSetting);
+        else {
+            callReceiverState = PackageManager.COMPONENT_ENABLED_STATE_DISABLED;
         }
-
+        NotifyUtil.setCallReceiverState(this, callReceiverState);
+        NotifyUtil.setCallReceiverStatePreferences(this, callReceiverState);
     }
 
-    private void savePlayRingtonesAtFullVolumeSwitchSetting(boolean newSetting){
-        NotifyUtil.setPlayCallsAtFullVolumeSetting(this, newSetting);
-    }
 
     private void saveIgnoreTextsFromNonContactsSetting(){
         boolean newSetting = ignoreTextsFromNonContactsSwitch.isChecked();
@@ -140,27 +99,12 @@ public class SettingsActivity extends ActionBarActivity{
 
     }
 
-    private void saveCallListenerToggleSwitchSetting(){
-        int newState;
-        if(listenForCallsSwitch.isChecked()){
-            newState = PackageManager.COMPONENT_ENABLED_STATE_ENABLED;
-        }
-        else {
-            newState = PackageManager.COMPONENT_ENABLED_STATE_DISABLED;
-        }
-
-        NotifyUtil.setCallReceiverState(this, newState);
-        NotifyUtil.setCallReceiverStatePreferences(this, newState);
-    }
-
-
 
     private void init(){
         displaySMSListenerToggleSwitch();
-        displayCallListenerToggleSwitch();
         ignoreTextsFromNonContactsSwitch.setChecked(NotifyUtil.getIgnoreTextsFromNonContactsSetting(this));
         ignoreCallsFromNonContactsSwitch.setChecked(NotifyUtil.getIgnoreCallsFromNonContactsSetting(this));
-        playCallsAtFullVolumeSwitch.setChecked(NotifyUtil.getPlayCallsAtFullVolumeSetting(this));
+
 
     }
 
@@ -173,18 +117,6 @@ public class SettingsActivity extends ActionBarActivity{
             listenForTextsSwitch.setChecked(false);
         }
     }
-
-    private void displayCallListenerToggleSwitch(){
-        callRecieverState = NotifyUtil.getCallReceiverStatePreferences(this);
-        if(callRecieverState == PackageManager.COMPONENT_ENABLED_STATE_ENABLED){
-            listenForCallsSwitch.setChecked(true);
-        }
-        else{
-            listenForCallsSwitch.setChecked(false);
-        }
-    }
-
-
 
 
 

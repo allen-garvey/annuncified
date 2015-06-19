@@ -20,7 +20,6 @@ public class NotifyUtil{
     public static final int receiverDefaultState = PackageManager.COMPONENT_ENABLED_STATE_ENABLED;
     public static final int callReceiverDefaultState = PackageManager.COMPONENT_ENABLED_STATE_DISABLED;
     public static final String contactNotificationsInfoSharedPreferencesName = "Annuncified contact notifications info shared preferences name";
-    public static final String contactRingtonesInfoSharedPreferencesName = "Annuncified contact ringtones info shared preferences name";
     public static final String NOT_FOUND = "This is the string you receive if for some reason the value is not stored in shared preferences.";
 
 
@@ -57,14 +56,6 @@ public class NotifyUtil{
         pm.setComponentEnabledSetting(receiver,
                 receiverState,
                 PackageManager.DONT_KILL_APP);
-    }
-
-    public static boolean getPlayCallsAtFullVolumeSetting(Context app){
-        return NotifyUtil.getSharedPreferences(app).getBoolean(app.getString(R.string.play_calls_at_full_volume_key),false);
-    }
-
-    public static void setPlayCallsAtFullVolumeSetting(Context app, boolean newSetting){
-        NotifyUtil.getSharedPreferences(app).edit().putBoolean(app.getString(R.string.play_calls_at_full_volume_key), newSetting).apply();
     }
 
     public static boolean getIgnoreCallsFromNonContactsSetting(Context app){
