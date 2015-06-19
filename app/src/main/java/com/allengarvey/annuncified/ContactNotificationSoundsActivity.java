@@ -16,9 +16,7 @@ import android.widget.ListView;
 
 import java.util.ArrayList;
 
-/**
- * Created by Allen X on 5/15/15.
- */
+
 public class ContactNotificationSoundsActivity extends ListActivity{
     private String[] contactList;
     private ArrayList<String> contactNames;
@@ -31,7 +29,7 @@ public class ContactNotificationSoundsActivity extends ListActivity{
         super.onCreate(savedInstanceState);
         initLists();
         contactList = contactDisplayNames.toArray(new String[contactNames.size()]);
-        arrayAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, android.R.id.text1, contactList);
+        arrayAdapter = new ArrayAdapter<>(this, R.layout.narrow_list_layout, R.id.list_item, contactList);
         setListAdapter(arrayAdapter);
 
     }
@@ -49,7 +47,6 @@ public class ContactNotificationSoundsActivity extends ListActivity{
         // Handle action bar item clicks here. The action bar will
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
 
         return super.onOptionsItemSelected(item);
     }
@@ -91,7 +88,7 @@ public class ContactNotificationSoundsActivity extends ListActivity{
 
 
     public void setNotificationSound(int position){
-        Uri ringtoneUri = (Uri) null;
+        Uri ringtoneUri = null;
         String ringtonePath = NotifyUtil.notificationSoundPathFromContactsID(this, contactIDs.get(position));
         if(!ringtonePath.equals(NotifyUtil.NOT_FOUND) || !ringtonePath.equals(getString(R.string.silent_ringtone_key))){
             ringtoneUri = NotifyUtil.uriFromPath(ringtonePath);
