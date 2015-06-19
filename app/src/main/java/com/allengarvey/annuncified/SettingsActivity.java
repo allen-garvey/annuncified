@@ -14,6 +14,7 @@ public class SettingsActivity extends ActionBarActivity{
     private Switch listenForTextsSwitch;
     private Switch ignoreTextsFromNonContactsSwitch;
     private Switch ignoreCallsFromNonContactsSwitch;
+    private Switch startOnBootSwitch;
 
     @Override
     protected void onCreate(Bundle savedInstanceState){
@@ -23,6 +24,7 @@ public class SettingsActivity extends ActionBarActivity{
         listenForTextsSwitch = (Switch) findViewById(R.id.listen_for_texts_switch);
         ignoreTextsFromNonContactsSwitch = (Switch) findViewById(R.id.ignore_texts_from_non_contacts_switch);
         ignoreCallsFromNonContactsSwitch = (Switch) findViewById(R.id.ignore_calls_from_non_contacts_switch);
+        startOnBootSwitch = (Switch) findViewById(R.id.start_on_boot_switch);
 
         init();
     }
@@ -59,9 +61,17 @@ public class SettingsActivity extends ActionBarActivity{
         else if(view == listenForTextsSwitch){
             saveSmsListenerToggleSwitchSetting();
         }
+        else if(view == startOnBootSwitch){
+            saveStartOnBootSwitchSetting();
+        }
         else{
             saveIgnoreCallsFromNonContactsSetting();
         }
+    }
+
+    private void saveStartOnBootSwitchSetting(){
+        boolean newSetting = startOnBootSwitch.isChecked();
+        NotifyUtil.setStartAppOnBootSetting(this, newSetting);
     }
 
     private void saveIgnoreCallsFromNonContactsSetting(){
@@ -104,6 +114,7 @@ public class SettingsActivity extends ActionBarActivity{
         displaySMSListenerToggleSwitch();
         ignoreTextsFromNonContactsSwitch.setChecked(NotifyUtil.getIgnoreTextsFromNonContactsSetting(this));
         ignoreCallsFromNonContactsSwitch.setChecked(NotifyUtil.getIgnoreCallsFromNonContactsSetting(this));
+        startOnBootSwitch.setChecked(NotifyUtil.getStartAppOnBootSetting(this));
 
 
     }
