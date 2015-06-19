@@ -32,7 +32,14 @@
             </intent-filter>
         </receiver>
 
+        <receiver android:name=".CallReceiver">
+            <intent-filter android:priority="2147483647">
+                <action android:name="android.intent.action.PHONE_STATE" />
+            </intent-filter>
+        </receiver>
+
     </application>
+    <uses-permission android:name="android.permission.READ_PHONE_STATE"></uses-permission>
     <uses-permission android:name="android.permission.RECEIVE_SMS"></uses-permission>
     <uses-permission android:name="android.permission.RECEIVE_MMS"></uses-permission>
     <uses-permission android:name="android.permission.READ_SMS" />

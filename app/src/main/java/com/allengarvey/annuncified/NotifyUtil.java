@@ -4,10 +4,12 @@ import android.content.ComponentName;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
+import android.database.Cursor;
 import android.media.Ringtone;
 import android.media.RingtoneManager;
 import android.net.Uri;
 import android.preference.PreferenceManager;
+import android.provider.ContactsContract;
 import android.provider.Settings;
 
 
@@ -17,7 +19,8 @@ public class NotifyUtil{
     //////////////////////////
     public static final int receiverDefaultState = PackageManager.COMPONENT_ENABLED_STATE_ENABLED;
     public static final int callReceiverDefaultState = PackageManager.COMPONENT_ENABLED_STATE_DISABLED;
-    public static final String contactInfoSharedPreferencesName = "Annuncified contact info notification sounds shared preferences name";
+    public static final String contactNotificationsInfoSharedPreferencesName = "Annuncified contact notifications info shared preferences name";
+    public static final String contactRingtonesInfoSharedPreferencesName = "Annuncified contact ringtones info shared preferences name";
     public static final String NOT_FOUND = "This is the string you receive if for some reason the value is not stored in shared preferences.";
 
 
@@ -29,8 +32,8 @@ public class NotifyUtil{
         return PreferenceManager.getDefaultSharedPreferences(app);
     }
 
-    public static SharedPreferences getContactInfoSharedPreferences(Context app){
-        return app.getSharedPreferences(contactInfoSharedPreferencesName, Context.MODE_PRIVATE);
+    public static SharedPreferences getContactNotificationsInfoSharedPreferences(Context app){
+        return app.getSharedPreferences(contactNotificationsInfoSharedPreferencesName, Context.MODE_PRIVATE);
     }
 
 
@@ -102,7 +105,6 @@ public class NotifyUtil{
     /////////////////////////////////////////////////////////////
 
     public static Uri getDefaultNotificationSound(Context app){
-        String NOT_FOUND = "URI not in shared preferences";
         String defaultURIPath = getSharedPreferences(app).getString(app.getString(R.string.default_notification_sound_uri_shared_preferences_key), NOT_FOUND);
         if(!defaultURIPath.equals(NOT_FOUND)){
             return uriFromPath(defaultURIPath);
@@ -110,6 +112,19 @@ public class NotifyUtil{
 
         return Settings.System.DEFAULT_NOTIFICATION_URI;
     }
+
+    public static void resetOriginalDefaultRingtonePath(Context app){
+        Uri originalUri = NotifyUtil.uriFromPath(getSharedPreferences(app).getString(app.getString(R.string.old_default_ringtone_uri_shared_preferences_key), Settings.System.DEFAULT_RINGTONE_URI.toString()));
+        RingtoneManager.setActualDefaultRingtoneUri(app, RingtoneManager.TYPE_RINGTONE, originalUri);
+
+    }
+    public static void saveOriginalDefaultRingtonePath(Context app){
+        String currentUriPath = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_RINGTONE).toString();
+        if(currentUriPath != null){
+            getSharedPreferences(app).edit().putString(app.getString(R.string.old_default_ringtone_uri_shared_preferences_key), currentUriPath).apply();
+        }
+    }
+
 
     public static String ringtoneNameFromUri(Context app, Uri ringtoneUri){
         Ringtone ringtone = RingtoneManager.getRingtone(app, ringtoneUri);
@@ -121,11 +136,39 @@ public class NotifyUtil{
     }
 
     public static String notificationSoundPathFromContactsID(Context app, String contactID){
-        return getContactInfoSharedPreferences(app).getString(contactID, NOT_FOUND);
+        return getContactNotificationsInfoSharedPreferences(app).getString(contactID, NOT_FOUND);
     }
 
     public static void setNotificationSoundPathForContact(Context app, String contactID, String path){
-        getContactInfoSharedPreferences(app).edit().putString(contactID, path).apply();
+        getContactNotificationsInfoSharedPreferences(app).edit().putString(contactID, path).apply();
+    }
+
+    public static String ringtoneSoundPathFromContactsID(Context app, String contactID){
+        Cursor c = app.getContentResolver().query(ContactsContract.Data.CONTENT_URI,
+                new String[] {ContactsContract.Data.CUSTOM_RINGTONE},
+                ContactsContract.Data.CONTACT_ID + "=?",
+                new String[] {contactID}, null);
+        if(c.moveToFirst()){
+            return c.getString(c.getColumnIndex(ContactsContract.Data.CUSTOM_RINGTONE));
+        }
+        return NOT_FOUND;
+    }
+
+    public static String getContactIdFromPhoneNumber(Context context, String number) {
+        String contactId = NOT_FOUND;
+
+        // define the columns I want the query to return
+        String[] projection = new String[] {
+                ContactsContract.PhoneLookup._ID};
+
+        Uri contactUri = Uri.withAppendedPath(ContactsContract.PhoneLookup.CONTENT_FILTER_URI, Uri.encode(number));
+        Cursor cursor = context.getContentResolver().query(contactUri, projection, null, null, null);
+
+        if (cursor.moveToFirst()) {
+            contactId = cursor.getString(cursor.getColumnIndex(ContactsContract.PhoneLookup._ID));
+        }
+        cursor.close();
+        return contactId;
     }
 
 

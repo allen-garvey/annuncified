@@ -44,6 +44,8 @@
     <string name="default_contact_notification_sound_key">The key that the contact should play the default sound</string>
     <string name="receiver_state_shared_preferences_key">SMSReceiver on off state key</string>
     <string name="default_notification_sound_uri_shared_preferences_key">Default notification sound uri key</string>
+    <string name="default_ringtone_uri_shared_preferences_key">Default ringtone uri key</string>
+    <string name="old_default_ringtone_uri_shared_preferences_key">Key for default ringtone before changed to silent for non-contact calls</string>
     <string name="ignore_calls_from_non_contacts_key">The key for if calls from non-contacts should be ignored</string>
     <string name="play_calls_at_full_volume_key">The key for if ringtones for calls should be played at full volume with no fade-in</string>
     <string name="call_receiver_key">The key to turn call listener on and off</string>
