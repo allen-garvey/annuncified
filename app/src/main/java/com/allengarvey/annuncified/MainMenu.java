@@ -40,6 +40,7 @@ public class MainMenu extends ListActivity{
 
     private void init(){
         NotifyUtil.setSMSReceiverState(this, NotifyUtil.getSMSReceiverStatePreferences(this));
+        NotifyUtil.setCallReceiverState(this, NotifyUtil.getCallReceiverStatePreferences(this));
     }
 
     @Override

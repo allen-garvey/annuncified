@@ -53,22 +53,11 @@ public class SettingsActivity extends ActionBarActivity{
 
 
     @Override
-    protected void onPause(){
-        super.onPause();
-        saveSettings();
-
-    }
-
-    @Override
     protected void onResume(){
         super.onResume();
         init();
     }
 
-    private void saveSettings(){
-        saveSmsListenerToggleSwitchSetting();
-        saveIgnoreTextsFromNonContactsSetting();
-    }
 
     public void switchChanged(View view){
         if(view == ignoreTextsFromNonContactsSwitch){
@@ -93,18 +82,7 @@ public class SettingsActivity extends ActionBarActivity{
         NotifyUtil.setIgnoreCallsFromNonContactsSetting(this, newSetting);
     }
 
-    private void saveCallListenerToggleSwitchSetting(){
-        int newState;
-        if(listenForCallsSwitch.isChecked()){
-            newState = PackageManager.COMPONENT_ENABLED_STATE_ENABLED;
-        }
-        else {
-            newState = PackageManager.COMPONENT_ENABLED_STATE_DISABLED;
-        }
 
-        //add method to actually turn on and turn off receiver
-        NotifyUtil.setCallReceiverStatePreferences(this, newState);
-    }
 
     private void showConfirmDialogue(final boolean newSetting){
         DialogInterface.OnClickListener dialogClickListener = new DialogInterface.OnClickListener() {
@@ -160,6 +138,19 @@ public class SettingsActivity extends ActionBarActivity{
         NotifyUtil.setSMSReceiverState(this, newSMSState);
         NotifyUtil.setSMSReceiverStatePreferences(this, newSMSState);
 
+    }
+
+    private void saveCallListenerToggleSwitchSetting(){
+        int newState;
+        if(listenForCallsSwitch.isChecked()){
+            newState = PackageManager.COMPONENT_ENABLED_STATE_ENABLED;
+        }
+        else {
+            newState = PackageManager.COMPONENT_ENABLED_STATE_DISABLED;
+        }
+
+        NotifyUtil.setCallReceiverState(this, newState);
+        NotifyUtil.setCallReceiverStatePreferences(this, newState);
     }
 
 

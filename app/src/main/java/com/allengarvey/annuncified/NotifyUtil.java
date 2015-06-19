@@ -48,6 +48,14 @@ public class NotifyUtil{
                 PackageManager.DONT_KILL_APP);
     }
 
+    public static void setCallReceiverState(Context app, int receiverState){
+        ComponentName receiver = new ComponentName(app, CallReceiver.class);
+        PackageManager pm = app.getPackageManager();
+        pm.setComponentEnabledSetting(receiver,
+                receiverState,
+                PackageManager.DONT_KILL_APP);
+    }
+
     public static boolean getPlayCallsAtFullVolumeSetting(Context app){
         return NotifyUtil.getSharedPreferences(app).getBoolean(app.getString(R.string.play_calls_at_full_volume_key),false);
     }
