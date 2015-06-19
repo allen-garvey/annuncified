@@ -13,8 +13,8 @@
 
     <!-- Strings used in help layout-->
     <string name="about_button">About Annuncified</string>
-    <string name="help_text">To avoid multiple notification sounds playing when you get a SMS message, set your notification sound to none in
-    your device main settings.\n\nIf you have not set a custom notification sound for a contact, the default notification sound will be played.</string>
+    <string name="help_text">To avoid multiple notification sounds when you get a SMS message, set your notification sound to none in
+    your device settings.</string>
 
     <!-- Strings used in about layout-->
     <string name="about_text">Annuncified &#169;2015 Allen Garvey\n\nReleased under the MIT License\ngithub.com/allen-garvey/annuncified</string>
@@ -22,6 +22,8 @@
     <!-- Strings used in settings layout-->
     <string name="setting_calls_header">Calls</string>
     <string name="setting_texts_header">Texts</string>
+    <string name="setting_general_header">General</string>
+    <string name="settings_start_app_on_boot_switch">Start on boot</string>
     <string name="settings_toggle_sms_listener_switch">Listen for texts</string>
     <string name="ignore_texts_from_non_contacts_switch">Silence texts from non-contacts</string>
     <string name="ignore_calls_from_non_contacts_switch">Silence calls from non-contacts</string>
@@ -46,5 +48,6 @@
     <string name="old_default_ringtone_uri_shared_preferences_key">Key for default ringtone before changed to silent for non-contact calls</string>
     <string name="ignore_calls_from_non_contacts_key">The key for if calls from non-contacts should be ignored</string>
     <string name="call_receiver_key">The key to turn call listener on and off</string>
+    <string name="boot_receiver_key">The key for if the app should launch on startup</string>
 </resources>
 

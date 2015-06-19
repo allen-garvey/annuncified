@@ -35,6 +35,15 @@ public class NotifyUtil{
         return app.getSharedPreferences(contactNotificationsInfoSharedPreferencesName, Context.MODE_PRIVATE);
     }
 
+    ////////////////////////////////////////////////////////////
+    // initialize app broadcast receivers based on settings
+    ////////////////////////////////////////////////////////////
+
+    public static void startBroadcastReceiversBasedOnSettings(Context app){
+        NotifyUtil.setSMSReceiverState(app, NotifyUtil.getSMSReceiverStatePreferences(app));
+        NotifyUtil.setCallReceiverState(app, NotifyUtil.getCallReceiverStatePreferences(app));
+    }
+
 
     ////////////////////////////////////////////////////////////
     // get and set methods for stored shared preferences values
@@ -72,7 +81,12 @@ public class NotifyUtil{
     public static void setIgnoreTextsFromNonContactsSetting(Context app, boolean newSetting){
         NotifyUtil.getSharedPreferences(app).edit().putBoolean(app.getString(R.string.ignore_texts_from_non_contacts_key), newSetting).apply();
     }
-
+    public static boolean getStartAppOnBootSetting(Context app){
+        return NotifyUtil.getSharedPreferences(app).getBoolean(app.getString(R.string.boot_receiver_key),false);
+    }
+    public static void setStartAppOnBootSetting(Context app, boolean newSetting){
+        NotifyUtil.getSharedPreferences(app).edit().putBoolean(app.getString(R.string.boot_receiver_key), newSetting).apply();
+    }
 
     public static int getSMSReceiverStatePreferences(Context app){
         return getSharedPreferences(app).getInt(app.getString(R.string.receiver_state_shared_preferences_key), receiverDefaultState);
