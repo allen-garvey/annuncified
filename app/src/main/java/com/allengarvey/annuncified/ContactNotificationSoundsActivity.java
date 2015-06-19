@@ -62,18 +62,15 @@ public class ContactNotificationSoundsActivity extends ListActivity{
         contactIDs = new ArrayList<>();
         contactDisplayNames = new ArrayList<>();
         Cursor phones = getContentResolver().query(ContactsContract.CommonDataKinds.Phone.CONTENT_URI, null,null,null, ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME + " ASC");
-        while (phones.moveToNext())
-        {
+        while (phones.moveToNext()){
+
             String name = phones.getString(phones.getColumnIndex(ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME));
             String contactID = phones.getString(phones.getColumnIndex(ContactsContract.CommonDataKinds.Phone.CONTACT_ID));
             String notificationName;
             String path = NotifyUtil.notificationSoundPathFromContactsID(this, contactID);
-            if(path.equals(NotifyUtil.NOT_FOUND)){
+            if(path.equals(NotifyUtil.NOT_FOUND) || path.equals(getString(R.string.default_contact_notification_sound_key))){
                 notificationName = getString(R.string.contact_notification_sound_not_set_text);
 
-            }
-            else if(path.equals(getString(R.string.default_contact_notification_sound_key))){
-                notificationName = getString(R.string.contact_notification_sound_not_set_text);
             }
             else {
                 notificationName = NotifyUtil.ringtoneNameFromUri(this, NotifyUtil.uriFromPath(path));
@@ -103,10 +100,9 @@ public class ContactNotificationSoundsActivity extends ListActivity{
     }
 
     @Override
-    protected void onActivityResult(final int requestCode, final int resultCode, final Intent intent)
-    {
-        if (resultCode == Activity.RESULT_OK)
-        {
+    protected void onActivityResult(final int requestCode, final int resultCode, final Intent intent){
+        if (resultCode == Activity.RESULT_OK){
+
             Uri uri = intent.getParcelableExtra(RingtoneManager.EXTRA_RINGTONE_PICKED_URI);
             String contactID = contactIDs.get(requestCode);
             String uriPath;
