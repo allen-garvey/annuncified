@@ -30,7 +30,7 @@
             android:showText="true"
             android:enabled="true"
             android:checked="false"
-            android:layout_marginBottom="30dp"
+            android:layout_marginBottom="40dp"
             android:onClick="switchChanged"/>
 
         <TextView
