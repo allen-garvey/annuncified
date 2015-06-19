@@ -16,6 +16,7 @@ public class NotifyUtil{
     // constants
     //////////////////////////
     public static final int receiverDefaultState = PackageManager.COMPONENT_ENABLED_STATE_ENABLED;
+    public static final int callReceiverDefaultState = PackageManager.COMPONENT_ENABLED_STATE_DISABLED;
     public static final String contactInfoSharedPreferencesName = "Annuncified contact info notification sounds shared preferences name";
     public static final String NOT_FOUND = "This is the string you receive if for some reason the value is not stored in shared preferences.";
 
@@ -47,6 +48,22 @@ public class NotifyUtil{
                 PackageManager.DONT_KILL_APP);
     }
 
+    public static boolean getPlayCallsAtFullVolumeSetting(Context app){
+        return NotifyUtil.getSharedPreferences(app).getBoolean(app.getString(R.string.play_calls_at_full_volume_key),false);
+    }
+
+    public static void setPlayCallsAtFullVolumeSetting(Context app, boolean newSetting){
+        NotifyUtil.getSharedPreferences(app).edit().putBoolean(app.getString(R.string.play_calls_at_full_volume_key), newSetting).apply();
+    }
+
+    public static boolean getIgnoreCallsFromNonContactsSetting(Context app){
+        return NotifyUtil.getSharedPreferences(app).getBoolean(app.getString(R.string.ignore_calls_from_non_contacts_key),false);
+    }
+
+    public static void setIgnoreCallsFromNonContactsSetting(Context app, boolean newSetting){
+        NotifyUtil.getSharedPreferences(app).edit().putBoolean(app.getString(R.string.ignore_calls_from_non_contacts_key), newSetting).apply();
+    }
+
     public static boolean getIgnoreTextsFromNonContactsSetting(Context app){
         return NotifyUtil.getSharedPreferences(app).getBoolean(app.getString(R.string.ignore_texts_from_non_contacts_key),false);
     }
@@ -61,6 +78,14 @@ public class NotifyUtil{
 
     public static void setSMSReceiverStatePreferences(Context app, int newReceiverState){
         getSharedPreferences(app).edit().putInt(app.getString(R.string.receiver_state_shared_preferences_key), newReceiverState).apply();
+    }
+
+    public static int getCallReceiverStatePreferences(Context app){
+        return getSharedPreferences(app).getInt(app.getString(R.string.call_receiver_key), callReceiverDefaultState);
+    }
+
+    public static void setCallReceiverStatePreferences(Context app, int newReceiverState){
+        getSharedPreferences(app).edit().putInt(app.getString(R.string.call_receiver_key), newReceiverState).apply();
     }
 
 

@@ -20,8 +20,14 @@
     <string name="about_text">Annuncified &#169;2015 Allen Garvey\n\nReleased under the MIT License\ngithub.com/allen-garvey/annuncified</string>
 
     <!-- Strings used in settings layout-->
+    <string name="setting_calls_header">Calls</string>
+    <string name="setting_texts_header">Texts</string>
     <string name="settings_toggle_sms_listener_switch">Listen for texts</string>
     <string name="ignore_texts_from_non_contacts_switch">Silence texts from non-contacts</string>
+    <string name="ignore_calls_from_non_contacts_switch">Silence calls from non-contacts</string>
+    <string name="settings_toggle_call_listener_switch">Listen for calls</string>
+    <string name="settings_toggle_play_calls_at_full_volume_switch">Play ringtones with no fade-in</string>
+    <string name="setting_play_calls_at_full_volume_modal_warning">Warning! If someone calls while you are on the phone, you may be exposed to dangerously high sound levels! Are you sure you want to do this?</string>
 
     <!-- Strings used in change notifications layout-->
     <string name="default_notificaton_text">Default notification sound:</string>
@@ -38,5 +44,8 @@
     <string name="default_contact_notification_sound_key">The key that the contact should play the default sound</string>
     <string name="receiver_state_shared_preferences_key">SMSReceiver on off state key</string>
     <string name="default_notification_sound_uri_shared_preferences_key">Default notification sound uri key</string>
+    <string name="ignore_calls_from_non_contacts_key">The key for if calls from non-contacts should be ignored</string>
+    <string name="play_calls_at_full_volume_key">The key for if ringtones for calls should be played at full volume with no fade-in</string>
+    <string name="call_receiver_key">The key to turn call listener on and off</string>
 </resources>
 

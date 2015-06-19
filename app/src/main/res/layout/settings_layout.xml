@@ -3,23 +3,82 @@
               android:orientation="vertical"
               android:layout_width="match_parent"
               android:layout_height="match_parent">
+<ScrollView android:layout_width="match_parent" android:layout_height="match_parent">
+
 
     <TableLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="10dp">
 
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:text="@string/setting_calls_header"
+            android:id="@+id/textView2"
+            android:layout_marginBottom="10dp"/>
+
         <Switch
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/settings_toggle_sms_listener_switch"
-            android:id="@+id/annunciator_listen_for_texts_switch"
+            android:text="@string/settings_toggle_call_listener_switch"
+            android:id="@+id/listen_for_calls_switch"
             android:layout_gravity="right"
             android:layout_column="13"
             android:showText="true"
             android:enabled="true"
             android:checked="false"
-            android:layout_marginBottom="30dp"/>
+            android:layout_marginBottom="30dp"
+            android:onClick="switchChanged"/>
+
+
+        <Switch
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/ignore_calls_from_non_contacts_switch"
+            android:id="@+id/ignore_calls_from_non_contacts_switch"
+            android:layout_gravity="right"
+            android:layout_column="13"
+            android:showText="true"
+            android:enabled="true"
+            android:checked="false"
+            android:layout_marginBottom="30dp"
+            android:onClick="switchChanged"/>
+        <Switch
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/settings_toggle_play_calls_at_full_volume_switch"
+            android:id="@+id/play_calls_at_full_volume_switch"
+            android:layout_gravity="right"
+            android:layout_column="13"
+            android:showText="true"
+            android:enabled="true"
+            android:checked="false"
+            android:layout_marginBottom="60dp"
+            android:onClick="switchChanged"/>
+
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:text="@string/setting_texts_header"
+            android:id="@+id/textView3"
+            android:layout_marginBottom="10dp"/>
+
+        <Switch
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/settings_toggle_sms_listener_switch"
+            android:id="@+id/listen_for_texts_switch"
+            android:layout_gravity="right"
+            android:layout_column="13"
+            android:showText="true"
+            android:enabled="true"
+            android:checked="false"
+            android:layout_marginBottom="30dp"
+            android:onClick="switchChanged"/>
 
         <Switch
             android:layout_width="wrap_content"
@@ -30,7 +89,8 @@
             android:enabled="true"
             android:checked="false"
             android:showText="true"
-            />
+            android:onClick="switchChanged"
+            android:layout_marginBottom="20dp"/>
     </TableLayout>
-
+</ScrollView>
 </LinearLayout>
