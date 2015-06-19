@@ -23,10 +23,18 @@ public class ContactNotificationSoundsActivity extends ListActivity{
     private ArrayList<String> contactDisplayNames;
     private ArrayList<String> contactIDs;
     private ArrayAdapter<String> arrayAdapter;
-
+    private static final int[] typesOfPhoneNumbersToDisplayInList = {ContactsContract.CommonDataKinds.Phone.TYPE_MOBILE,
+                                                                    ContactsContract.CommonDataKinds.Phone.TYPE_MMS,
+                                                                    ContactsContract.CommonDataKinds.Phone.TYPE_WORK_MOBILE};
     @Override
     protected void onCreate(Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
+
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();  // Always call the superclass method first
         initLists();
         contactList = contactDisplayNames.toArray(new String[contactNames.size()]);
         arrayAdapter = new ArrayAdapter<>(this, R.layout.narrow_list_layout, R.id.list_item, contactList);
@@ -66,18 +74,22 @@ public class ContactNotificationSoundsActivity extends ListActivity{
 
             String name = phones.getString(phones.getColumnIndex(ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME));
             String contactID = phones.getString(phones.getColumnIndex(ContactsContract.CommonDataKinds.Phone.CONTACT_ID));
-            String notificationName;
-            String path = NotifyUtil.notificationSoundPathFromContactsID(this, contactID);
-            if(path.equals(NotifyUtil.NOT_FOUND) || path.equals(getString(R.string.default_contact_notification_sound_key))){
-                notificationName = getString(R.string.contact_notification_sound_not_set_text);
+            int phoneNumberType = phones.getInt(phones.getColumnIndex(ContactsContract.CommonDataKinds.Phone.TYPE));
 
+            if(isInArray(phoneNumberType, typesOfPhoneNumbersToDisplayInList)){
+                String notificationName;
+                String path = NotifyUtil.notificationSoundPathFromContactsID(this, contactID);
+                if(path.equals(NotifyUtil.NOT_FOUND) || path.equals(getString(R.string.default_contact_notification_sound_key))){
+                    notificationName = getString(R.string.contact_notification_sound_not_set_text);
+
+                }
+                else{
+                    notificationName = NotifyUtil.ringtoneNameFromUri(this, NotifyUtil.uriFromPath(path));
+                }
+                contactNames.add(name);
+                contactDisplayNames.add(getFormattedListItemText(name, notificationName));
+                contactIDs.add(contactID);
             }
-            else {
-                notificationName = NotifyUtil.ringtoneNameFromUri(this, NotifyUtil.uriFromPath(path));
-            }
-            contactNames.add(name);
-            contactDisplayNames.add(getFormattedListItemText(name, notificationName));
-            contactIDs.add(contactID);
         }
         phones.close();
     }
@@ -132,6 +144,15 @@ public class ContactNotificationSoundsActivity extends ListActivity{
 
     private String getFormattedListItemText(String contactName, String notificationName){
         return contactName + ": " + notificationName;
+    }
+
+    private boolean isInArray(int needle, int[] haystack){
+        for(int i : haystack){
+            if(i == needle){
+                return true;
+            }
+        }
+        return false;
     }
 
 }
