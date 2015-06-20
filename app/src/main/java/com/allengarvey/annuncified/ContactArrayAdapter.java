@@ -9,17 +9,21 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.TextView;
 
+import static android.R.color.tertiary_text_light;
+
 public class ContactArrayAdapter extends BaseAdapter{
     private int textViewResourceId;
     private Context app;
     private int resource;
     private String[] objects;
+    private Boolean[] contactSoundIsDefault;
 
-    public ContactArrayAdapter(Context context, int resource, int textViewResourceId, String[] objects){
+    public ContactArrayAdapter(Context context, int resource, int textViewResourceId, String[] objects, Boolean[] contactIsDefault){
         this.textViewResourceId = textViewResourceId;
         this.app = context;
         this.resource = resource;
         this.objects = objects;
+        this.contactSoundIsDefault = contactIsDefault;
 
     }
 
@@ -52,13 +56,11 @@ public class ContactArrayAdapter extends BaseAdapter{
         String item = (String) getItem(position);
         text.setText(item);
 
-        String defaultText = app.getString(R.string.contact_notification_sound_not_set_text);
-
-        if(item.length() >= defaultText.length()){ //bounds check first
-            String itemEnd = item.substring(item.length() - defaultText.length(), item.length());
-            if(!itemEnd.equals(defaultText)){
-                text.setTextColor(Color.BLACK);
-            }
+        if(!contactSoundIsDefault[position]){
+            text.setTextColor(Color.BLACK);
+        }
+        else{
+            text.setTextColor(app.getResources().getColor(tertiary_text_light));
         }
         return view;
     }

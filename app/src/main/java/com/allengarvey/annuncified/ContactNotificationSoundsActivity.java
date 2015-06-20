@@ -11,7 +11,6 @@ import android.provider.ContactsContract;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.BaseAdapter;
 import android.widget.ListView;
 
 import java.util.ArrayList;
@@ -19,10 +18,12 @@ import java.util.ArrayList;
 
 public class ContactNotificationSoundsActivity extends ListActivity{
     private String[] contactList;
+    private Boolean[] contactIsDefaultSound;
     private ArrayList<String> contactNames;
     private ArrayList<String> contactDisplayNames;
     private ArrayList<String> contactIDs;
-    private BaseAdapter arrayAdapter;
+    private ArrayList<Boolean> contactSoundIsDefault;
+    private ContactArrayAdapter arrayAdapter;
     private static final int[] typesOfPhoneNumbersToDisplayInList = {ContactsContract.CommonDataKinds.Phone.TYPE_MOBILE,
                                                                     ContactsContract.CommonDataKinds.Phone.TYPE_MMS,
                                                                     ContactsContract.CommonDataKinds.Phone.TYPE_WORK_MOBILE};
@@ -37,7 +38,8 @@ public class ContactNotificationSoundsActivity extends ListActivity{
         super.onResume();  // Always call the superclass method first
         initLists();
         contactList = contactDisplayNames.toArray(new String[contactNames.size()]);
-        arrayAdapter = new ContactArrayAdapter(this, R.layout.narrow_list_layout, R.id.list_item, contactList);
+        contactIsDefaultSound = contactSoundIsDefault.toArray(new Boolean[contactSoundIsDefault.size()]);
+        arrayAdapter = new ContactArrayAdapter(this, R.layout.narrow_list_layout, R.id.list_item, contactList, contactIsDefaultSound);
         setListAdapter(arrayAdapter);
 
     }
@@ -69,6 +71,7 @@ public class ContactNotificationSoundsActivity extends ListActivity{
         contactNames = new ArrayList<>();
         contactIDs = new ArrayList<>();
         contactDisplayNames = new ArrayList<>();
+        contactSoundIsDefault = new ArrayList<>();
         Cursor phones = getContentResolver().query(ContactsContract.CommonDataKinds.Phone.CONTENT_URI, null,null,null, ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME + " ASC");
         while (phones.moveToNext()){
 
@@ -81,10 +84,11 @@ public class ContactNotificationSoundsActivity extends ListActivity{
                 String path = NotifyUtil.notificationSoundPathFromContactsID(this, contactID);
                 if(path.equals(NotifyUtil.NOT_FOUND) || path.equals(getString(R.string.default_contact_notification_sound_key))){
                     notificationName = getString(R.string.contact_notification_sound_not_set_text);
-
+                    contactSoundIsDefault.add(true);
                 }
                 else{
                     notificationName = NotifyUtil.ringtoneNameFromUri(this, NotifyUtil.uriFromPath(path));
+                    contactSoundIsDefault.add(false);
                 }
                 contactNames.add(name);
                 contactDisplayNames.add(getFormattedListItemText(name, notificationName));
@@ -118,26 +122,21 @@ public class ContactNotificationSoundsActivity extends ListActivity{
             Uri uri = intent.getParcelableExtra(RingtoneManager.EXTRA_RINGTONE_PICKED_URI);
             String contactID = contactIDs.get(requestCode);
             String uriPath;
-            String ringtoneName;
 
 
             if(RingtoneManager.isDefault(uri)){
                 uriPath = getString(R.string.default_contact_notification_sound_key);
-                ringtoneName = getString(R.string.contact_notification_sound_not_set_text);
             }
             else if (uri != null){
                 uriPath = uri.toString();
-                ringtoneName = NotifyUtil.ringtoneNameFromUri(this, uri);
             }
 
             else{
                 uriPath = getString(R.string.silent_ringtone_key);
-                ringtoneName = getString(R.string.silent_ringtone_text);
-
             }
             NotifyUtil.setNotificationSoundPathForContact(this, contactID, uriPath);
-            contactList[requestCode] = getFormattedListItemText(contactNames.get(requestCode), ringtoneName);
-            arrayAdapter.notifyDataSetChanged();
+
+            //no need to call adapter.dataSetChanged() because onResume is called automatically
         }
     }
 
