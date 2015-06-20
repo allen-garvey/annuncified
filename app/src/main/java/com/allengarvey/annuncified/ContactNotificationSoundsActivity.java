@@ -14,6 +14,8 @@ import android.view.View;
 import android.widget.ListView;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashSet;
 
 
 public class ContactNotificationSoundsActivity extends ListActivity{
@@ -24,9 +26,10 @@ public class ContactNotificationSoundsActivity extends ListActivity{
     private ArrayList<String> contactIDs;
     private ArrayList<Boolean> contactSoundIsDefault;
     private ContactArrayAdapter arrayAdapter;
-    private static final int[] typesOfPhoneNumbersToDisplayInList = {ContactsContract.CommonDataKinds.Phone.TYPE_MOBILE,
+    private static final Integer[] typesOfPhoneNumbersToDisplayInList = {ContactsContract.CommonDataKinds.Phone.TYPE_MOBILE,
                                                                     ContactsContract.CommonDataKinds.Phone.TYPE_MMS,
                                                                     ContactsContract.CommonDataKinds.Phone.TYPE_WORK_MOBILE};
+    private static final HashSet<Integer> phoneNumberTypesSet = new HashSet<>(Arrays.asList(typesOfPhoneNumbersToDisplayInList));
     @Override
     protected void onCreate(Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
@@ -79,7 +82,7 @@ public class ContactNotificationSoundsActivity extends ListActivity{
             String contactID = phones.getString(phones.getColumnIndex(ContactsContract.CommonDataKinds.Phone.CONTACT_ID));
             int phoneNumberType = phones.getInt(phones.getColumnIndex(ContactsContract.CommonDataKinds.Phone.TYPE));
 
-            if(isInArray(phoneNumberType, typesOfPhoneNumbersToDisplayInList)){
+            if(phoneNumberTypesSet.contains(phoneNumberType)){
                 String notificationName;
                 String path = NotifyUtil.notificationSoundPathFromContactsID(this, contactID);
                 if(path.equals(NotifyUtil.NOT_FOUND) || path.equals(getString(R.string.default_contact_notification_sound_key))){
@@ -145,13 +148,5 @@ public class ContactNotificationSoundsActivity extends ListActivity{
         return contactName + ": " + notificationName;
     }
 
-    private boolean isInArray(int needle, int[] haystack){
-        for(int i : haystack){
-            if(i == needle){
-                return true;
-            }
-        }
-        return false;
-    }
 
 }
