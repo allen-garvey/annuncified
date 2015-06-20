@@ -11,5 +11,5 @@
         android:text="Medium Text"
         android:id="@+id/list_item"
         android:layout_margin="20dp"
-        android:textColor="@android:color/black"/>
+        />
 </LinearLayout>

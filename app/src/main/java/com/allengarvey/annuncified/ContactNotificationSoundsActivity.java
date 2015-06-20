@@ -11,7 +11,7 @@ import android.provider.ContactsContract;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.ArrayAdapter;
+import android.widget.BaseAdapter;
 import android.widget.ListView;
 
 import java.util.ArrayList;
@@ -22,7 +22,7 @@ public class ContactNotificationSoundsActivity extends ListActivity{
     private ArrayList<String> contactNames;
     private ArrayList<String> contactDisplayNames;
     private ArrayList<String> contactIDs;
-    private ArrayAdapter<String> arrayAdapter;
+    private BaseAdapter arrayAdapter;
     private static final int[] typesOfPhoneNumbersToDisplayInList = {ContactsContract.CommonDataKinds.Phone.TYPE_MOBILE,
                                                                     ContactsContract.CommonDataKinds.Phone.TYPE_MMS,
                                                                     ContactsContract.CommonDataKinds.Phone.TYPE_WORK_MOBILE};
@@ -37,7 +37,7 @@ public class ContactNotificationSoundsActivity extends ListActivity{
         super.onResume();  // Always call the superclass method first
         initLists();
         contactList = contactDisplayNames.toArray(new String[contactNames.size()]);
-        arrayAdapter = new ArrayAdapter<>(this, R.layout.narrow_list_layout, R.id.list_item, contactList);
+        arrayAdapter = new ContactArrayAdapter(this, R.layout.narrow_list_layout, R.id.list_item, contactList);
         setListAdapter(arrayAdapter);
 
     }
