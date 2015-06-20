@@ -73,6 +73,7 @@ public class ContactNotificationSoundsActivity extends ListActivity{
     private void initLists(){
         contactNames = new ArrayList<>();
         contactIDs = new ArrayList<>();
+        HashSet<String> contactIDSet = new HashSet<>();
         contactDisplayNames = new ArrayList<>();
         contactSoundIsDefault = new ArrayList<>();
         Cursor phones = getContentResolver().query(ContactsContract.CommonDataKinds.Phone.CONTENT_URI, null,null,null, ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME + " ASC");
@@ -82,7 +83,8 @@ public class ContactNotificationSoundsActivity extends ListActivity{
             String contactID = phones.getString(phones.getColumnIndex(ContactsContract.CommonDataKinds.Phone.CONTACT_ID));
             int phoneNumberType = phones.getInt(phones.getColumnIndex(ContactsContract.CommonDataKinds.Phone.TYPE));
 
-            if(phoneNumberTypesSet.contains(phoneNumberType)){
+            if(phoneNumberTypesSet.contains(phoneNumberType) && !contactIDSet.contains(contactID)){
+                contactIDSet.add(contactID);
                 String notificationName;
                 String path = NotifyUtil.notificationSoundPathFromContactsID(this, contactID);
                 if(path.equals(NotifyUtil.NOT_FOUND) || path.equals(getString(R.string.default_contact_notification_sound_key))){
