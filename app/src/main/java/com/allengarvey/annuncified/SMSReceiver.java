@@ -3,7 +3,6 @@ package com.allengarvey.annuncified;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.media.AudioManager;
 import android.media.MediaPlayer;
@@ -12,6 +11,7 @@ import android.os.Bundle;
 import android.provider.ContactsContract;
 import android.telephony.SmsMessage;
 import android.util.Log;
+import java.util.ArrayList;
 
 public class SMSReceiver extends BroadcastReceiver{
 
@@ -21,8 +21,7 @@ public class SMSReceiver extends BroadcastReceiver{
         if(intent.getAction().equals("android.provider.Telephony.SMS_RECEIVED")){
             Bundle bundle = intent.getExtras();           //---get the SMS message passed in---
             SmsMessage[] msgs;
-            String msg_from = "";
-            String contactName = "";
+            String msg_from;
             String contactID = "";
             if (bundle != null){
                 //---retrieve the SMS message received---
@@ -37,7 +36,6 @@ public class SMSReceiver extends BroadcastReceiver{
                         Cursor c = context.getContentResolver().query(lookupUri, new String[]{ContactsContract.PhoneLookup.DISPLAY_NAME, ContactsContract.PhoneLookup._ID}, null, null, null);
 
                         c.moveToFirst();
-                        contactName = c.getString(c.getColumnIndex(ContactsContract.PhoneLookup.DISPLAY_NAME));
                         contactID = c.getString(c.getColumnIndex(ContactsContract.PhoneLookup._ID));
                     }
 
@@ -47,8 +45,8 @@ public class SMSReceiver extends BroadcastReceiver{
 
                 }
             }
-            Log.e("Message sent from: ", msg_from + " " + contactName);
-            Log.e("SMS Receiver contact id: ", contactID);
+            //Log.e("Message sent from: ", msg_from + " " + contactName);
+            //Log.e("SMS Receiver contact id: ", contactID);
 
             playRingtone(context, contactID);
 
@@ -58,12 +56,20 @@ public class SMSReceiver extends BroadcastReceiver{
 
     private void playRingtone(Context context, String contactID){
         String ringtonePath = NotifyUtil.notificationSoundPathFromContactsID(context, contactID);
-        Uri ringtoneUri;
+        Uri ringtoneUri = NotifyUtil.getDefaultNotificationSound(context);
         if(ringtonePath.equals(context.getString(R.string.silent_ringtone_key)) || (contactID.equals("") && NotifyUtil.getIgnoreTextsFromNonContactsSetting(context))){
             return;
         }
-        if(ringtonePath.equals(NotifyUtil.NOT_FOUND) || ringtonePath.equals(context.getString(R.string.default_contact_notification_sound_key))){
-            ringtoneUri = NotifyUtil.getDefaultNotificationSound(context);
+        if((ringtonePath.equals(NotifyUtil.NOT_FOUND) || ringtonePath.equals(context.getString(R.string.default_contact_notification_sound_key))) && !contactID.equals("")){
+            //ringtone not set for contact, so see if any of the groups the contact is in has notification sound set
+            ArrayList<String> groupList = NotifyUtil.getGroupIdsFromContactId(context, contactID);
+            for(String groupId : groupList){
+                String groupNotificationPath = NotifyUtil.notificationSoundPathFromGroupID(context, groupId);
+                if(!groupNotificationPath.equals(NotifyUtil.NOT_FOUND)){
+                    ringtoneUri = NotifyUtil.uriFromPath(groupNotificationPath);
+                    break;
+                }
+            }
         }
         else {
             ringtoneUri = NotifyUtil.uriFromPath(ringtonePath);

@@ -12,6 +12,9 @@ import android.preference.PreferenceManager;
 import android.provider.ContactsContract;
 import android.provider.Settings;
 
+import java.util.ArrayList;
+import java.util.HashSet;
+
 
 public class NotifyUtil{
     //////////////////////////
@@ -20,6 +23,7 @@ public class NotifyUtil{
     public static final int receiverDefaultState = PackageManager.COMPONENT_ENABLED_STATE_ENABLED;
     public static final int callReceiverDefaultState = PackageManager.COMPONENT_ENABLED_STATE_DISABLED;
     public static final String contactNotificationsInfoSharedPreferencesName = "Annuncified contact notifications info shared preferences name";
+    public static final String groupNotificationsInfoSharedPreferencesName = "Annuncified group notifications info shared preferences name";
     public static final String NOT_FOUND = "This is the string you receive if for some reason the value is not stored in shared preferences.";
 
 
@@ -34,6 +38,11 @@ public class NotifyUtil{
     public static SharedPreferences getContactNotificationsInfoSharedPreferences(Context app){
         return app.getSharedPreferences(contactNotificationsInfoSharedPreferencesName, Context.MODE_PRIVATE);
     }
+
+    public static SharedPreferences getGroupNotificationsInfoSharedPreferences(Context app){
+        return app.getSharedPreferences(groupNotificationsInfoSharedPreferencesName, Context.MODE_PRIVATE);
+    }
+
 
     ////////////////////////////////////////////////////////////
     // initialize app broadcast receivers based on settings
@@ -148,6 +157,14 @@ public class NotifyUtil{
         getContactNotificationsInfoSharedPreferences(app).edit().putString(contactID, path).apply();
     }
 
+    public static String notificationSoundPathFromGroupID(Context app, String groupID){
+        return getGroupNotificationsInfoSharedPreferences(app).getString(groupID, NOT_FOUND);
+    }
+
+    public static void setNotificationSoundPathForGroup(Context app, String groupID, String path){
+        getGroupNotificationsInfoSharedPreferences(app).edit().putString(groupID, path).apply();
+    }
+
     public static String ringtoneSoundPathFromContactsID(Context app, String contactID){
         Cursor c = app.getContentResolver().query(ContactsContract.Data.CONTENT_URI,
                 new String[] {ContactsContract.Data.CUSTOM_RINGTONE},
@@ -176,6 +193,41 @@ public class NotifyUtil{
         return contactId;
     }
 
+    public static ArrayList<String> getGroupIdsFromContactId(Context app, String contactId){
+        ArrayList<String> groupList = new ArrayList<>();
+        HashSet<String> visibleGroupIds = new HashSet<>();
+        Cursor groups = NotifyUtil.getGroupsDataCursor(app);
+        while(groups.moveToNext()){
+            String groupID = groups.getString(groups.getColumnIndex(ContactsContract.Groups._ID));
+            visibleGroupIds.add(groupID);
+        }
+
+        Cursor c = app.getContentResolver().query(ContactsContract.Data.CONTENT_URI,
+                new String[]{
+                        ContactsContract.Data.CONTACT_ID,
+                        ContactsContract.Data.DATA1
+                },
+                ContactsContract.Data.MIMETYPE + "=? AND " + ContactsContract.Data.CONTACT_ID + " = " + contactId,
+                new String[]{ContactsContract.CommonDataKinds.GroupMembership.CONTENT_ITEM_TYPE}, null);
+        while (c.moveToNext()){
+            String groupId = c.getString(c.getColumnIndex(ContactsContract.Data.DATA1));
+
+            if(visibleGroupIds.contains(groupId)){
+                groupList.add(groupId);
+            }
+        }
+        c.close();
+
+        return groupList;
+    }
+
+    ///////////////////////////////////////////////////////////////
+    //Cursors
+    //////////////////////////////////////////////////////////////
+
+    public static Cursor getGroupsDataCursor(Context app){
+        return app.getContentResolver().query(ContactsContract.Groups.CONTENT_URI, null,ContactsContract.Groups.GROUP_VISIBLE + " = 0",null, ContactsContract.Groups.TITLE + " ASC");
+    }
 
 
 }
