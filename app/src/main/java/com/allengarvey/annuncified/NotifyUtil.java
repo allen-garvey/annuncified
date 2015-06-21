@@ -226,6 +226,7 @@ public class NotifyUtil{
     //////////////////////////////////////////////////////////////
 
     public static Cursor getGroupsDataCursor(Context app){
+        //confusingly 0 means that the group is visible
         return app.getContentResolver().query(ContactsContract.Groups.CONTENT_URI, null,ContactsContract.Groups.GROUP_VISIBLE + " = 0",null, ContactsContract.Groups.TITLE + " ASC");
     }
 
