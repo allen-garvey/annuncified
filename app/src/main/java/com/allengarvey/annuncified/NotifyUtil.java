@@ -58,6 +58,17 @@ public class NotifyUtil{
     // get and set methods for stored shared preferences values
     ////////////////////////////////////////////////////////////
 
+    //required because of thread issues with saving multiple settings concurrently
+    public static void saveAllSettings(Context app, int smsReceiverStatePreferences, int callReceiverStatePreferences, boolean ignoreCallsFromNonContacts, boolean ignoreTextsFromNonContacts, boolean startOnBoot){
+        NotifyUtil.getSharedPreferences(app).edit()
+                .putInt(app.getString(R.string.receiver_state_shared_preferences_key), smsReceiverStatePreferences)
+                .putInt(app.getString(R.string.call_receiver_key),callReceiverStatePreferences)
+                .putBoolean(app.getString(R.string.ignore_calls_from_non_contacts_key), ignoreCallsFromNonContacts)
+                .putBoolean(app.getString(R.string.ignore_texts_from_non_contacts_key), ignoreTextsFromNonContacts)
+                .putBoolean(app.getString(R.string.boot_receiver_key), startOnBoot)
+                .apply();
+    }
+
     //receiverState is PackageManager.COMPONENT_ENABLED_STATE_ENABLED
     //or PackageManager.COMPONENT_ENABLED_STATE_DISABLED
     public static void setSMSReceiverState(Context app, int receiverState){
@@ -80,37 +91,20 @@ public class NotifyUtil{
         return NotifyUtil.getSharedPreferences(app).getBoolean(app.getString(R.string.ignore_calls_from_non_contacts_key),false);
     }
 
-    public static void setIgnoreCallsFromNonContactsSetting(Context app, boolean newSetting){
-        NotifyUtil.getSharedPreferences(app).edit().putBoolean(app.getString(R.string.ignore_calls_from_non_contacts_key), newSetting).apply();
-    }
-
     public static boolean getIgnoreTextsFromNonContactsSetting(Context app){
         return NotifyUtil.getSharedPreferences(app).getBoolean(app.getString(R.string.ignore_texts_from_non_contacts_key),false);
     }
-    public static void setIgnoreTextsFromNonContactsSetting(Context app, boolean newSetting){
-        NotifyUtil.getSharedPreferences(app).edit().putBoolean(app.getString(R.string.ignore_texts_from_non_contacts_key), newSetting).apply();
-    }
+
     public static boolean getStartAppOnBootSetting(Context app){
         return NotifyUtil.getSharedPreferences(app).getBoolean(app.getString(R.string.boot_receiver_key),false);
-    }
-    public static void setStartAppOnBootSetting(Context app, boolean newSetting){
-        NotifyUtil.getSharedPreferences(app).edit().putBoolean(app.getString(R.string.boot_receiver_key), newSetting).apply();
     }
 
     public static int getSMSReceiverStatePreferences(Context app){
         return getSharedPreferences(app).getInt(app.getString(R.string.receiver_state_shared_preferences_key), receiverDefaultState);
     }
 
-    public static void setSMSReceiverStatePreferences(Context app, int newReceiverState){
-        getSharedPreferences(app).edit().putInt(app.getString(R.string.receiver_state_shared_preferences_key), newReceiverState).apply();
-    }
-
     public static int getCallReceiverStatePreferences(Context app){
         return getSharedPreferences(app).getInt(app.getString(R.string.call_receiver_key), callReceiverDefaultState);
-    }
-
-    public static void setCallReceiverStatePreferences(Context app, int newReceiverState){
-        getSharedPreferences(app).edit().putInt(app.getString(R.string.call_receiver_key), newReceiverState).apply();
     }
 
 
@@ -139,7 +133,6 @@ public class NotifyUtil{
         }
     }
 
-
     public static String ringtoneNameFromUri(Context app, Uri ringtoneUri){
         Ringtone ringtone = RingtoneManager.getRingtone(app, ringtoneUri);
         return ringtone.getTitle(app);
@@ -165,6 +158,8 @@ public class NotifyUtil{
         getGroupNotificationsInfoSharedPreferences(app).edit().putString(groupID, path).apply();
     }
 
+    /*
+    //helpful if play ringtone feature is added to app
     public static String ringtoneSoundPathFromContactsID(Context app, String contactID){
         Cursor c = app.getContentResolver().query(ContactsContract.Data.CONTENT_URI,
                 new String[] {ContactsContract.Data.CUSTOM_RINGTONE},
@@ -175,6 +170,7 @@ public class NotifyUtil{
         }
         return NOT_FOUND;
     }
+    */
 
     public static String getContactIdFromPhoneNumber(Context context, String number) {
         String contactId = NOT_FOUND;
