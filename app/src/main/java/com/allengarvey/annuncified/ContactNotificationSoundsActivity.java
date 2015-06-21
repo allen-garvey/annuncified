@@ -30,6 +30,7 @@ public class ContactNotificationSoundsActivity extends ListActivity{
                                                                     ContactsContract.CommonDataKinds.Phone.TYPE_MMS,
                                                                     ContactsContract.CommonDataKinds.Phone.TYPE_WORK_MOBILE};
     private static final HashSet<Integer> phoneNumberTypesSet = new HashSet<>(Arrays.asList(typesOfPhoneNumbersToDisplayInList));
+    private String defaultNotificationSoundKey;
     @Override
     protected void onCreate(Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
@@ -39,6 +40,7 @@ public class ContactNotificationSoundsActivity extends ListActivity{
     @Override
     public void onResume() {
         super.onResume();  // Always call the superclass method first
+        defaultNotificationSoundKey = getString(R.string.default_contact_notification_sound_key);
         initLists();
         contactList = contactDisplayNames.toArray(new String[contactNames.size()]);
         contactIsDefaultSound = contactSoundIsDefault.toArray(new Boolean[contactSoundIsDefault.size()]);
@@ -76,6 +78,7 @@ public class ContactNotificationSoundsActivity extends ListActivity{
         HashSet<String> contactIDSet = new HashSet<>();
         contactDisplayNames = new ArrayList<>();
         contactSoundIsDefault = new ArrayList<>();
+        final String contactSoundNotSetText = getString(R.string.contact_notification_sound_not_set_text);
         Cursor phones = getContentResolver().query(ContactsContract.CommonDataKinds.Phone.CONTENT_URI, null,null,null, ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME + " ASC");
         while (phones.moveToNext()){
 
@@ -87,8 +90,8 @@ public class ContactNotificationSoundsActivity extends ListActivity{
                 contactIDSet.add(contactID);
                 String notificationName;
                 String path = NotifyUtil.notificationSoundPathFromContactsID(this, contactID);
-                if(path.equals(NotifyUtil.NOT_FOUND) || path.equals(getString(R.string.default_contact_notification_sound_key))){
-                    notificationName = getString(R.string.contact_notification_sound_not_set_text);
+                if(path.equals(NotifyUtil.NOT_FOUND) || path.equals(defaultNotificationSoundKey)){
+                    notificationName = contactSoundNotSetText;
                     contactSoundIsDefault.add(true);
                 }
                 else{
@@ -114,7 +117,7 @@ public class ContactNotificationSoundsActivity extends ListActivity{
 
         Intent intent = new Intent(RingtoneManager.ACTION_RINGTONE_PICKER);
         intent.putExtra(RingtoneManager.EXTRA_RINGTONE_TYPE, RingtoneManager.TYPE_NOTIFICATION);
-        intent.putExtra(RingtoneManager.EXTRA_RINGTONE_TITLE, "Select Tone");
+        intent.putExtra(RingtoneManager.EXTRA_RINGTONE_TITLE, getString(R.string.custom_notification_tone_modal_text));
         intent.putExtra(RingtoneManager.EXTRA_RINGTONE_EXISTING_URI, ringtoneUri);
         this.startActivityForResult(intent, position);
 
@@ -130,7 +133,7 @@ public class ContactNotificationSoundsActivity extends ListActivity{
 
 
             if(RingtoneManager.isDefault(uri)){
-                uriPath = getString(R.string.default_contact_notification_sound_key);
+                uriPath = defaultNotificationSoundKey;
             }
             else if (uri != null){
                 uriPath = uri.toString();
