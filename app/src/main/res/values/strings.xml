@@ -31,11 +31,14 @@
 
     <!-- Strings used in change notifications layout-->
     <string name="default_notificaton_text">Default notification sound:</string>
+    <string name="set_default_notification_tone_modal">Select Default Tone</string>
+    <string name="group_notification_text">Set notification sounds per group</string>
     <string name="custom_notification_text">Set notification sounds per contact</string>
 
-    <!-- Strings used in custom contact notifications layout-->
+    <!-- Strings used in custom contact and groups notifications layout-->
     <string name="contact_notification_sound_not_set_text">default sound</string>
     <string name="silent_ringtone_text">Silent</string>
+    <string name="custom_notification_tone_modal_text">"Select Tone"</string>
 
 
     <!-- Shared preferences keys-->
