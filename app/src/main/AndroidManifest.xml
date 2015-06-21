@@ -21,6 +21,7 @@
         <activity android:name=".SettingsActivity"></activity>
         <activity android:name=".ChangeNotificationsActivity"></activity>
         <activity android:name=".ContactNotificationSoundsActivity"></activity>
+        <activity android:name=".GroupNotificationSoundsActivity"></activity>
 
         <receiver android:name=".SMSReceiver"  android:exported="true" android:enabled="true">
             <intent-filter android:priority="2147483647">

@@ -21,7 +21,7 @@ public class ChangeNotificationsActivity extends ListActivity{
     @Override
     protected void onCreate(Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
-        menuList = new String[]{"", getResources().getString(R.string.custom_notification_text)};
+        menuList = new String[]{"", getResources().getString(R.string.group_notification_text) , getResources().getString(R.string.custom_notification_text)};
         menuAdapter = new ArrayAdapter<>(this, R.layout.wide_list_layout, R.id.list_item, menuList);
         setListAdapter(menuAdapter);
         defaultNotificationText = getResources().getString(R.string.default_notificaton_text);
@@ -49,7 +49,7 @@ public class ChangeNotificationsActivity extends ListActivity{
     public void setNotificationSound(){
         Intent intent = new Intent(RingtoneManager.ACTION_RINGTONE_PICKER);
         intent.putExtra(RingtoneManager.EXTRA_RINGTONE_TYPE, RingtoneManager.TYPE_NOTIFICATION);
-        intent.putExtra(RingtoneManager.EXTRA_RINGTONE_TITLE, "Select Default Tone");
+        intent.putExtra(RingtoneManager.EXTRA_RINGTONE_TITLE, getString(R.string.set_default_notification_tone_modal));
         intent.putExtra(RingtoneManager.EXTRA_RINGTONE_EXISTING_URI, NotifyUtil.getDefaultNotificationSound(this));
         intent.putExtra(RingtoneManager.EXTRA_RINGTONE_SHOW_SILENT, false);
         this.startActivityForResult(intent, 5);
@@ -79,6 +79,9 @@ public class ChangeNotificationsActivity extends ListActivity{
             case 0:
                 setNotificationSound();
                 break;
+            case 1:
+                startActivity(new Intent(ChangeNotificationsActivity.this, GroupNotificationSoundsActivity.class));
+                break;
             default:
                 startActivity(new Intent(ChangeNotificationsActivity.this, ContactNotificationSoundsActivity.class));
                 break;
@@ -92,7 +95,7 @@ public class ChangeNotificationsActivity extends ListActivity{
     }
 
     private void setDefaultNotificationText(String ringtoneUriName){
-        menuList[0] = defaultNotificationText + "\n" + ringtoneUriName;
+        menuList[0] = defaultNotificationText + " " + ringtoneUriName;
         menuAdapter.notifyDataSetChanged();
     }
 
