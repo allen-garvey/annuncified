@@ -26,6 +26,7 @@
     <string name="setting_general_header">General</string>
     <string name="settings_start_app_on_boot_switch">Start on boot</string>
     <string name="settings_toggle_sms_listener_switch">Listen for texts</string>
+    <string name="settings_toggle_call_listener_switch">Listen for calls</string>
     <string name="ignore_texts_from_non_contacts_switch">Silence texts from non-contacts</string>
     <string name="ignore_calls_from_non_contacts_switch">Silence calls from non-contacts</string>
 

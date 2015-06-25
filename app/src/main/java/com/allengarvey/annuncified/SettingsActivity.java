@@ -14,12 +14,14 @@ public class SettingsActivity extends ActionBarActivity{
     private Switch ignoreTextsFromNonContactsSwitch;
     private Switch ignoreCallsFromNonContactsSwitch;
     private Switch startOnBootSwitch;
+    private Switch listenForCallsSwitch;
 
     @Override
     protected void onCreate(Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
         setContentView(R.layout.settings_layout);
         listenForTextsSwitch = (Switch) findViewById(R.id.listen_for_texts_switch);
+        listenForCallsSwitch = (Switch) findViewById(R.id.listen_for_calls_switch);
         ignoreTextsFromNonContactsSwitch = (Switch) findViewById(R.id.ignore_texts_from_non_contacts_switch);
         ignoreCallsFromNonContactsSwitch = (Switch) findViewById(R.id.ignore_calls_from_non_contacts_switch);
         startOnBootSwitch = (Switch) findViewById(R.id.start_on_boot_switch);
@@ -38,7 +40,7 @@ public class SettingsActivity extends ActionBarActivity{
         int newSMSState = getReceiverState(listenForTextsSwitch.isChecked());
         NotifyUtil.setSMSReceiverState(this, newSMSState);
 
-        int newCallReceiverState = getReceiverState(ignoreCallsFromNonContactsSwitch.isChecked());
+        int newCallReceiverState = getReceiverState(listenForCallsSwitch.isChecked());
         NotifyUtil.setCallReceiverState(this, newCallReceiverState);
 
         NotifyUtil.saveAllSettings(this, newSMSState, newCallReceiverState, ignoreCallsFromNonContactsSwitch.isChecked(), ignoreTextsFromNonContactsSwitch.isChecked(), startOnBootSwitch.isChecked());
@@ -70,6 +72,7 @@ public class SettingsActivity extends ActionBarActivity{
 
     private void init(){
         displaySMSListenerToggleSwitch();
+        displayCallListenerSwitch();
         ignoreTextsFromNonContactsSwitch.setChecked(NotifyUtil.getIgnoreTextsFromNonContactsSetting(this));
         ignoreCallsFromNonContactsSwitch.setChecked(NotifyUtil.getIgnoreCallsFromNonContactsSetting(this));
         startOnBootSwitch.setChecked(NotifyUtil.getStartAppOnBootSetting(this));
@@ -81,6 +84,11 @@ public class SettingsActivity extends ActionBarActivity{
         listenForTextsSwitch.setChecked(isEnabled(smsRecieverState));
     }
 
+    private void displayCallListenerSwitch(){
+        int callReceiverState = NotifyUtil.getCallReceiverStatePreferences(this);
+        listenForCallsSwitch.setChecked(isEnabled(callReceiverState));
+    }
+
     private int getReceiverState(boolean isEnabled){
         if(isEnabled){
             return PackageManager.COMPONENT_ENABLED_STATE_ENABLED;
@@ -89,10 +97,7 @@ public class SettingsActivity extends ActionBarActivity{
     }
 
     private boolean isEnabled(int receiverState){
-        if(receiverState == PackageManager.COMPONENT_ENABLED_STATE_ENABLED){
-            return true;
-        }
-        return false;
+        return receiverState == PackageManager.COMPONENT_ENABLED_STATE_ENABLED;
     }
 
 
