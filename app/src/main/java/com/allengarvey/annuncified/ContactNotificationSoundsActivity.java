@@ -14,7 +14,6 @@ public class ContactNotificationSoundsActivity extends CustomNotificationSoundsA
     private static final HashSet<Integer> phoneNumberTypesSet = new HashSet<>(Arrays.asList(typesOfPhoneNumbersToDisplayInList));
 
     protected void populateLists(){
-        initLists();
         final String defaultNotificationSoundKey = getString(R.string.default_contact_notification_sound_key);
         HashSet<String> contactIDSet = new HashSet<>();
         final String contactSoundNotSetText = getString(R.string.contact_notification_sound_not_set_text);

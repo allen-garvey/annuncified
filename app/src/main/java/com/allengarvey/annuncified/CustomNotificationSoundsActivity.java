@@ -35,7 +35,7 @@ public abstract class CustomNotificationSoundsActivity extends ListActivity{
     public void onResume() {
         super.onResume();  // Always call the superclass method first
         defaultSoundText = getString(R.string.contact_notification_sound_not_set_text);
-        populateLists();
+        initLists();
         itemList = itemDisplayNames.toArray(new String[itemNames.size()]);
         itemUsesDefaultSound = itemSoundIsDefault.toArray(new Boolean[itemSoundIsDefault.size()]);
         arrayAdapter = new ContactArrayAdapter(this, R.layout.narrow_list_layout, R.id.list_item, itemList, itemUsesDefaultSound);
@@ -71,9 +71,10 @@ public abstract class CustomNotificationSoundsActivity extends ListActivity{
         itemIDs = new ArrayList<>();
         itemDisplayNames = new ArrayList<>();
         itemSoundIsDefault = new ArrayList<>();
+        populateLists();
     }
 
-    protected abstract void populateLists(); //initLists(); should be first line of this method
+    protected abstract void populateLists();
 
     protected abstract String notificationSoundPathFromItemID(Context context, String itemID);
 

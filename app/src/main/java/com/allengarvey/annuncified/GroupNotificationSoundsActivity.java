@@ -9,7 +9,6 @@ import java.util.HashSet;
 public class GroupNotificationSoundsActivity extends CustomNotificationSoundsActivity{
 
     protected void populateLists(){
-        initLists();
         HashSet<String> groupIDSet = new HashSet<>();
 
         final String defaultSoundKey = getString(R.string.default_contact_notification_sound_key);
