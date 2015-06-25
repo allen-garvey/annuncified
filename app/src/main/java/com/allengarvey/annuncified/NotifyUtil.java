@@ -113,9 +113,13 @@ public class NotifyUtil{
     }
 
 
+
+
+
     ////////////////////////////////////////////////////////////
     // Get Ringtone Uris and ringtone name string helper methods
     /////////////////////////////////////////////////////////////
+
 
     public static Uri getDefaultNotificationSound(Context app){
         String defaultURIPath = getSharedPreferences(app).getString(app.getString(R.string.default_notification_sound_uri_shared_preferences_key), NOT_FOUND);
@@ -126,17 +130,14 @@ public class NotifyUtil{
         return Settings.System.DEFAULT_NOTIFICATION_URI;
     }
 
-    public static void resetOriginalDefaultRingtonePath(Context app){
-        Uri originalUri = NotifyUtil.uriFromPath(getSharedPreferences(app).getString(app.getString(R.string.old_default_ringtone_uri_shared_preferences_key), Settings.System.DEFAULT_RINGTONE_URI.toString()));
-        RingtoneManager.setActualDefaultRingtoneUri(app, RingtoneManager.TYPE_RINGTONE, originalUri);
+    public static String getDefaultRingtonePath(Context app){
+        return getSharedPreferences(app).getString(app.getString(R.string.default_ringtone_uri_shared_preferences_key), RingtoneManager.getDefaultUri(RingtoneManager.TYPE_RINGTONE).toString());
+    }
 
+    public static void setDefaultRingtonePath(Context app, String path){
+        getSharedPreferences(app).edit().putString(app.getString(R.string.default_ringtone_uri_shared_preferences_key), path);
     }
-    public static void saveOriginalDefaultRingtonePath(Context app){
-        String currentUriPath = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_RINGTONE).toString();
-        if(currentUriPath != null){
-            getSharedPreferences(app).edit().putString(app.getString(R.string.old_default_ringtone_uri_shared_preferences_key), currentUriPath).apply();
-        }
-    }
+
 
     public static String ringtoneNameFromUri(Context app, Uri ringtoneUri){
         Ringtone ringtone = RingtoneManager.getRingtone(app, ringtoneUri);
@@ -171,19 +172,22 @@ public class NotifyUtil{
         getGroupRingtonesInfoSharedPreferences(app).edit().putString(groupID, path).apply();
     }
 
-    /*
-    //helpful if play ringtone feature is added to app
+
     public static String ringtoneSoundPathFromContactsID(Context app, String contactID){
         Cursor c = app.getContentResolver().query(ContactsContract.Data.CONTENT_URI,
                 new String[] {ContactsContract.Data.CUSTOM_RINGTONE},
-                ContactsContract.Data.CONTACT_ID + "=?",
-                new String[] {contactID}, null);
+                ContactsContract.Data.CONTACT_ID + "=" + contactID,
+                null, null);
         if(c.moveToFirst()){
-            return c.getString(c.getColumnIndex(ContactsContract.Data.CUSTOM_RINGTONE));
+            String ringtonePath = c.getString(c.getColumnIndex(ContactsContract.Contacts.CUSTOM_RINGTONE));
+            if(ringtonePath == null){
+                return NOT_FOUND;
+            }
+            return ringtonePath;
         }
         return NOT_FOUND;
     }
-    */
+
 
     public static String getContactIdFromPhoneNumber(Context context, String number) {
         String contactId = NOT_FOUND;

@@ -57,5 +57,6 @@
     <string name="ignore_calls_from_non_contacts_key">The key for if calls from non-contacts should be ignored</string>
     <string name="call_receiver_key">The key to turn call listener on and off</string>
     <string name="boot_receiver_key">The key for if the app should launch on startup</string>
+
 </resources>
 
