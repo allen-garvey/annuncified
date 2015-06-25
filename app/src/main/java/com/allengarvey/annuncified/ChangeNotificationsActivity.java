@@ -24,7 +24,7 @@ public class ChangeNotificationsActivity extends ListActivity{
         menuList = new String[]{"", getResources().getString(R.string.group_notification_text) , getResources().getString(R.string.custom_notification_text)};
         menuAdapter = new ArrayAdapter<>(this, R.layout.wide_list_layout, R.id.list_item, menuList);
         setListAdapter(menuAdapter);
-        defaultNotificationText = getResources().getString(R.string.default_notificaton_text);
+        defaultNotificationText = getResources().getString(R.string.default_notification_text);
         setDefaultNotificationText(NotifyUtil.getDefaultNotificationSound(this));
     }
 

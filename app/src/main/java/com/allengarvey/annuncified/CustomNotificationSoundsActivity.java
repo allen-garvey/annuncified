@@ -23,7 +23,6 @@ public abstract class CustomNotificationSoundsActivity extends ListActivity{
     protected ArrayList<String> itemIDs;
     protected ArrayList<Boolean> itemSoundIsDefault;
     protected ContactArrayAdapter arrayAdapter;
-    protected String defaultSoundText;
 
     @Override
     protected void onCreate(Bundle savedInstanceState){
@@ -34,7 +33,6 @@ public abstract class CustomNotificationSoundsActivity extends ListActivity{
     @Override
     public void onResume() {
         super.onResume();  // Always call the superclass method first
-        defaultSoundText = getString(R.string.contact_notification_sound_not_set_text);
         initLists();
         itemList = itemDisplayNames.toArray(new String[itemNames.size()]);
         itemUsesDefaultSound = itemSoundIsDefault.toArray(new Boolean[itemSoundIsDefault.size()]);
@@ -42,7 +40,6 @@ public abstract class CustomNotificationSoundsActivity extends ListActivity{
         setListAdapter(arrayAdapter);
 
     }
-
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu){
@@ -86,7 +83,7 @@ public abstract class CustomNotificationSoundsActivity extends ListActivity{
         }
 
         Intent intent = new Intent(RingtoneManager.ACTION_RINGTONE_PICKER);
-        intent.putExtra(RingtoneManager.EXTRA_RINGTONE_TYPE, RingtoneManager.TYPE_NOTIFICATION);
+        intent.putExtra(RingtoneManager.EXTRA_RINGTONE_TYPE, modalPickerSoundType());
         intent.putExtra(RingtoneManager.EXTRA_RINGTONE_TITLE, modalTitle());
         intent.putExtra(RingtoneManager.EXTRA_RINGTONE_EXISTING_URI, ringtoneUri);
         this.startActivityForResult(intent, position);
@@ -129,5 +126,12 @@ public abstract class CustomNotificationSoundsActivity extends ListActivity{
         return getString(R.string.custom_notification_tone_modal_text);
     }
 
+    protected int modalPickerSoundType(){
+        return RingtoneManager.TYPE_NOTIFICATION;
+    }
+
+    protected String defaultSoundText(){
+        return getString(R.string.contact_notification_sound_not_set_text);
+    }
 
 }

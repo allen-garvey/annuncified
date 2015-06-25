@@ -8,6 +8,7 @@ import java.util.HashSet;
 
 public class GroupNotificationSoundsActivity extends CustomNotificationSoundsActivity{
 
+    @Override
     protected void populateLists(){
         HashSet<String> groupIDSet = new HashSet<>();
 
@@ -18,13 +19,12 @@ public class GroupNotificationSoundsActivity extends CustomNotificationSoundsAct
             String name = groups.getString(groups.getColumnIndex(ContactsContract.Groups.TITLE));
             String groupID = groups.getString(groups.getColumnIndex(ContactsContract.Groups._ID));
 
-
             if(!groupIDSet.contains(groupID)){
                 groupIDSet.add(groupID);
                 String notificationName;
                 String path = notificationSoundPathFromItemID(this, groupID);
                 if(path.equals(NotifyUtil.NOT_FOUND) || path.equals(defaultSoundKey)){
-                    notificationName = defaultSoundText;
+                    notificationName = defaultSoundText();
                     itemSoundIsDefault.add(true);
                 }
                 else{
@@ -39,13 +39,12 @@ public class GroupNotificationSoundsActivity extends CustomNotificationSoundsAct
         groups.close();
     }
 
-
+    @Override
     protected String notificationSoundPathFromItemID(Context context, String itemID){
         return NotifyUtil.notificationSoundPathFromGroupID(this, itemID);
     }
 
-
-
+    @Override
     public void setNotificationSoundPathForItemId(Context context, String groupID, String uriPath){
         NotifyUtil.setNotificationSoundPathForGroup(this, groupID, uriPath);
     }
