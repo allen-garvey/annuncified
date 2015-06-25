@@ -23,6 +23,7 @@
         <activity android:name=".ContactNotificationSoundsActivity"></activity>
         <activity android:name=".GroupNotificationSoundsActivity"></activity>
         <activity android:name=".GroupRingtonesActivity"></activity>
+        <service android:name=".RingtonePlayingService"></service>
 
         <receiver android:name=".SMSReceiver"  android:exported="true" android:enabled="true">
             <intent-filter android:priority="2147483647">
@@ -35,7 +36,7 @@
         </receiver>
 
         <receiver android:name=".CallReceiver">
-            <intent-filter android:priority="2147483647">
+            <intent-filter android:priority="999">
                 <action android:name="android.intent.action.PHONE_STATE" />
             </intent-filter>
         </receiver>
