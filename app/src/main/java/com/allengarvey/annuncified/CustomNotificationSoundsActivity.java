@@ -87,7 +87,7 @@ public abstract class CustomNotificationSoundsActivity extends ListActivity{
 
         Intent intent = new Intent(RingtoneManager.ACTION_RINGTONE_PICKER);
         intent.putExtra(RingtoneManager.EXTRA_RINGTONE_TYPE, RingtoneManager.TYPE_NOTIFICATION);
-        intent.putExtra(RingtoneManager.EXTRA_RINGTONE_TITLE, getString(R.string.custom_notification_tone_modal_text));
+        intent.putExtra(RingtoneManager.EXTRA_RINGTONE_TITLE, modalTitle());
         intent.putExtra(RingtoneManager.EXTRA_RINGTONE_EXISTING_URI, ringtoneUri);
         this.startActivityForResult(intent, position);
 
@@ -123,6 +123,10 @@ public abstract class CustomNotificationSoundsActivity extends ListActivity{
 
     public String getFormattedListItemText(String itemName, String notificationName){
         return itemName + ": " + notificationName;
+    }
+
+    protected String modalTitle(){
+        return getString(R.string.custom_notification_tone_modal_text);
     }
 
 
