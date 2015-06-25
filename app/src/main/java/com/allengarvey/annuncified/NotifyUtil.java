@@ -24,6 +24,7 @@ public class NotifyUtil{
     public static final int callReceiverDefaultState = PackageManager.COMPONENT_ENABLED_STATE_DISABLED;
     public static final String contactNotificationsInfoSharedPreferencesName = "Annuncified contact notifications info shared preferences name";
     public static final String groupNotificationsInfoSharedPreferencesName = "Annuncified group notifications info shared preferences name";
+    public static final String groupRingtonesInfoSharedPreferencesName = "Annuncified group ringtones info shared preferences name";
     public static final String NOT_FOUND = "This is the string you receive if for some reason the value is not stored in shared preferences.";
 
 
@@ -41,6 +42,10 @@ public class NotifyUtil{
 
     public static SharedPreferences getGroupNotificationsInfoSharedPreferences(Context app){
         return app.getSharedPreferences(groupNotificationsInfoSharedPreferencesName, Context.MODE_PRIVATE);
+    }
+
+    public static SharedPreferences getGroupRingtonesInfoSharedPreferences(Context app){
+        return app.getSharedPreferences(groupRingtonesInfoSharedPreferencesName, Context.MODE_PRIVATE);
     }
 
 
@@ -156,6 +161,14 @@ public class NotifyUtil{
 
     public static void setNotificationSoundPathForGroup(Context app, String groupID, String path){
         getGroupNotificationsInfoSharedPreferences(app).edit().putString(groupID, path).apply();
+    }
+
+    public static String ringtonePathFromGroupID(Context app, String groupID){
+        return getGroupRingtonesInfoSharedPreferences(app).getString(groupID, NOT_FOUND);
+    }
+
+    public static void setRingtonePathForGroup(Context app, String groupID, String path){
+        getGroupRingtonesInfoSharedPreferences(app).edit().putString(groupID, path).apply();
     }
 
     /*

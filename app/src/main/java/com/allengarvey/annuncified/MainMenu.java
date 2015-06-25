@@ -49,6 +49,9 @@ public class MainMenu extends ListActivity{
                 startActivity(new Intent(MainMenu.this, ChangeNotificationsActivity.class));
                 break;
             case 1:
+                startActivity(new Intent(MainMenu.this, GroupRingtonesActivity.class));
+                break;
+            case 2:
                 startActivity(new Intent(MainMenu.this, SettingsActivity.class));
                 break;
             default:
