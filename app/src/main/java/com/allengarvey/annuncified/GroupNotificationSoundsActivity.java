@@ -22,7 +22,7 @@ public class GroupNotificationSoundsActivity extends CustomNotificationSoundsAct
             if(!groupIDSet.contains(groupID)){
                 groupIDSet.add(groupID);
                 String notificationName;
-                String path = NotifyUtil.notificationSoundPathFromGroupID(this, groupID);
+                String path = notificationSoundPathFromItemID(this, groupID);
                 if(path.equals(NotifyUtil.NOT_FOUND) || path.equals(defaultSoundKey)){
                     notificationName = defaultSoundText;
                     itemSoundIsDefault.add(true);
@@ -49,6 +49,7 @@ public class GroupNotificationSoundsActivity extends CustomNotificationSoundsAct
     public void setNotificationSoundPathForItemId(Context context, String groupID, String uriPath){
         NotifyUtil.setNotificationSoundPathForGroup(this, groupID, uriPath);
     }
+
 
 
 
