@@ -4,11 +4,9 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.media.RingtoneManager;
-import android.net.Uri;
 import android.telephony.PhoneStateListener;
 import android.telephony.TelephonyManager;
 import android.util.Log;
-import android.widget.Toast;
 
 
 public class CallReceiver extends BroadcastReceiver{
@@ -17,7 +15,7 @@ public class CallReceiver extends BroadcastReceiver{
         try {
             TelephonyManager tmgr = (TelephonyManager) context.getSystemService(Context.TELEPHONY_SERVICE);
 
-            //Create Listner
+            //Create Listener
             MyPhoneStateListener PhoneListener = new MyPhoneStateListener(context);
 
             // Register listener for LISTEN_CALL_STATE
@@ -38,10 +36,6 @@ public class CallReceiver extends BroadcastReceiver{
 
         public void onCallStateChanged(int state, String incomingNumber) {
             if (state == TelephonyManager.CALL_STATE_RINGING) {
-                String msg = "New Phone Call Event. Incoming Number : "+incomingNumber;
-                int duration = Toast.LENGTH_LONG;
-                Toast toast = Toast.makeText(app, msg, duration);
-                toast.show();
 
                 if(NotifyUtil.getIgnoreCallsFromNonContactsSetting(app) && NotifyUtil.getContactIdFromPhoneNumber(app, incomingNumber).equals(NotifyUtil.NOT_FOUND)){
                     NotifyUtil.saveOriginalDefaultRingtonePath(app);
