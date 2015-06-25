@@ -6,6 +6,7 @@ import android.support.v7.app.ActionBarActivity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.CompoundButton;
 import android.widget.Switch;
 
 
@@ -25,10 +26,19 @@ public class SettingsActivity extends ActionBarActivity{
         ignoreTextsFromNonContactsSwitch = (Switch) findViewById(R.id.ignore_texts_from_non_contacts_switch);
         ignoreCallsFromNonContactsSwitch = (Switch) findViewById(R.id.ignore_calls_from_non_contacts_switch);
         startOnBootSwitch = (Switch) findViewById(R.id.start_on_boot_switch);
+        init(); //have to call init before attaching listeners or for some reason doesn't display properly
 
-        init();
+        Switch[] switches = {listenForCallsSwitch, listenForTextsSwitch};
+
+        for(Switch s : switches){ //sliding a switch is different than clicking it, so this captures both
+            s.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener(){
+
+                public void onCheckedChanged(CompoundButton buttonView, boolean isChecked){
+                    switchChanged(buttonView);
+                }
+            });
+        }
     }
-
 
     @Override
     protected void onPause(){
@@ -66,7 +76,32 @@ public class SettingsActivity extends ActionBarActivity{
 
 
     public void switchChanged(View view){
+
+
+        if(view == listenForCallsSwitch){
+            setEnabledCallSettings(listenForCallsSwitch.isChecked());
+        }
+        else if(view == listenForTextsSwitch){
+            setEnabledNotificationSettings(listenForTextsSwitch.isChecked());
+        }
         saveAllSettings();
+
+    }
+
+
+
+    private void setEnabledCallSettings(boolean isEnabled){
+        ignoreCallsFromNonContactsSwitch.setEnabled(isEnabled);
+
+    }
+
+    private void setEnabledNotificationSettings(boolean isEnabled){
+        ignoreTextsFromNonContactsSwitch.setEnabled(isEnabled);
+    }
+
+    private void displayEnabled(){
+        setEnabledCallSettings(listenForCallsSwitch.isChecked());
+        setEnabledNotificationSettings(listenForTextsSwitch.isChecked());
     }
 
 
@@ -76,6 +111,7 @@ public class SettingsActivity extends ActionBarActivity{
         ignoreTextsFromNonContactsSwitch.setChecked(NotifyUtil.getIgnoreTextsFromNonContactsSetting(this));
         ignoreCallsFromNonContactsSwitch.setChecked(NotifyUtil.getIgnoreCallsFromNonContactsSetting(this));
         startOnBootSwitch.setChecked(NotifyUtil.getStartAppOnBootSetting(this));
+        displayEnabled();
 
     }
 
