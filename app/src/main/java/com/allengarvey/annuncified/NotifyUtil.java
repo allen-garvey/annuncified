@@ -121,8 +121,12 @@ public class NotifyUtil{
     /////////////////////////////////////////////////////////////
 
 
+    public static String getDefaultNotificationPath(Context app){
+        return getSharedPreferences(app).getString(app.getString(R.string.default_notification_sound_uri_shared_preferences_key), NOT_FOUND);
+    }
+
     public static Uri getDefaultNotificationSound(Context app){
-        String defaultURIPath = getSharedPreferences(app).getString(app.getString(R.string.default_notification_sound_uri_shared_preferences_key), NOT_FOUND);
+        String defaultURIPath = NotifyUtil.getDefaultNotificationPath(app);
         if(!defaultURIPath.equals(NOT_FOUND)){
             return uriFromPath(defaultURIPath);
         }
@@ -131,15 +135,23 @@ public class NotifyUtil{
     }
 
     public static String getDefaultRingtonePath(Context app){
-        return getSharedPreferences(app).getString(app.getString(R.string.default_ringtone_uri_shared_preferences_key), RingtoneManager.getDefaultUri(RingtoneManager.TYPE_RINGTONE).toString());
+        Uri defaultRingtone = RingtoneManager.getActualDefaultRingtoneUri(app, RingtoneManager.TYPE_RINGTONE);
+        String defaultRingtonePath = null;
+        if(defaultRingtone != null){
+            defaultRingtonePath = defaultRingtone.toString();
+        }
+        return getSharedPreferences(app).getString(app.getString(R.string.default_ringtone_uri_shared_preferences_key), defaultRingtonePath);
     }
 
     public static void setDefaultRingtonePath(Context app, String path){
-        getSharedPreferences(app).edit().putString(app.getString(R.string.default_ringtone_uri_shared_preferences_key), path);
+        getSharedPreferences(app).edit().putString(app.getString(R.string.default_ringtone_uri_shared_preferences_key), path).apply();
     }
 
 
     public static String ringtoneNameFromUri(Context app, Uri ringtoneUri){
+        if(ringtoneUri == null){
+            return app.getString(R.string.silent_ringtone_text);
+        }
         Ringtone ringtone = RingtoneManager.getRingtone(app, ringtoneUri);
         return ringtone.getTitle(app);
     }
