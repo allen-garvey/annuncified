@@ -15,7 +15,7 @@ import android.widget.ListView;
 import java.util.ArrayList;
 
 
-public abstract class CustomNotificationSoundsActivity extends ListActivity{
+public abstract class AbstractCustomNotificationSoundsActivity extends ListActivity{
     protected String[] itemList;
     protected Boolean[] itemUsesDefaultSound;
     protected ArrayList<String> itemNames;
