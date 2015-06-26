@@ -1,6 +1,6 @@
 #Annuncified
 
-Annuncified is an Android app that allows you to set custom notification sounds on a per contact basis. Annuncified listens for both SMS and MMS messages and plays the user selected ringtone based on who messaged you. There is also an option to have texts from non-contacts be set to silent so that you are not bothered by potentially spammy messages.
+Annuncified is a native Android app that allows you to set notification sounds by contact or Google group, as well as ringtones by Google group. You can also have calls and texts from non-contacts automatically silenced so that you are not bothered by telemarketers or wrong numbers.
 
 ##Dependencies
 
@@ -10,12 +10,8 @@ Annuncified is an Android app that allows you to set custom notification sounds 
 
 ##Getting Started
 
-* To avoid multiple notification sounds when you get a text, set your default notification sound to none in your main settings on your phone
-* Annuncified must be restarted every time you restart your phone in order to work
-
-##TODO
-
-* Set notification sounds by Google Group
+* To avoid multiple notification sounds when you get a text, set your default notification sound to none or silent in your main settings on your phone
+* To avoid multiple ringtones when you get a call, set your default ringtone to none or silent in your main settings on your phone
 
 ##License
 
