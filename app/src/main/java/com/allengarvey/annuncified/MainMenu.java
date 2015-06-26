@@ -46,10 +46,10 @@ public class MainMenu extends ListActivity{
     protected void onListItemClick(ListView l, View v, int postion, long id){
         switch(postion){
             case 0:
-                startActivity(new Intent(MainMenu.this, ChangeNotificationsActivity.class));
+                startActivity(new Intent(MainMenu.this, ChangeRingtonesActivity.class));
                 break;
             case 1:
-                startActivity(new Intent(MainMenu.this, GroupRingtonesActivity.class));
+                startActivity(new Intent(MainMenu.this, ChangeNotificationsActivity.class));
                 break;
             case 2:
                 startActivity(new Intent(MainMenu.this, SettingsActivity.class));

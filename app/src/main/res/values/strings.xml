@@ -6,8 +6,8 @@
 
     <!-- Strings used in main menu layout-->
     <string-array name="main_menu">
+        <item>Set Ringtones</item>
         <item>Set Notification Sounds</item>
-        <item>Set Group Ringtones</item>
         <item>Settings</item>
         <item>Help</item>
     </string-array>
@@ -30,21 +30,24 @@
     <string name="ignore_texts_from_non_contacts_switch">Silence texts from non-contacts</string>
     <string name="ignore_calls_from_non_contacts_switch">Silence calls from non-contacts</string>
 
-
     <!-- Strings used in change notifications layout-->
     <string name="default_notification_text">Default notification sound:</string>
     <string name="set_default_notification_tone_modal">Select Default Tone</string>
-    <string name="group_notification_text">Set notification sounds per group</string>
-    <string name="custom_notification_text">Set notification sounds per contact</string>
+    <string name="group_notification_text">Set notification sound for group</string>
+    <string name="custom_notification_text">Set notification sound for contact</string>
 
     <!-- Strings used in custom contact and groups notifications and group ringtones layout-->
     <string name="contact_notification_sound_not_set_text">default sound</string>
     <string name="silent_ringtone_text">Silent</string>
     <string name="custom_notification_tone_modal_text">Select Tone</string>
 
-    <!-- Strings used in group ringtones layout-->
+    <!-- Strings used in group ringtones and change ringtones layout-->
     <string name="custom_ringtone_modal_text">Select Ringtone</string>
     <string name="ringtone_not_set_text">default ringtone</string>
+
+    <!-- Strings used in change ringtones layout-->
+    <string name="set_group_ringtones_text">Set ringtone for group</string>
+    <string name="set_default_ringtone_text">Default Ringtone:</string>
 
     <!-- Shared preferences keys-->
     <string name="ignore_texts_from_non_contacts_key">The key for if texts from non-contacts should be ignored</string>
