@@ -7,7 +7,7 @@ import java.util.Arrays;
 import java.util.HashSet;
 
 
-public class ContactNotificationSoundsActivity extends CustomNotificationSoundsActivity{
+public class ContactNotificationSoundsActivity extends AbstractCustomNotificationSoundsActivity{
     private static final Integer[] typesOfPhoneNumbersToDisplayInList = {ContactsContract.CommonDataKinds.Phone.TYPE_MOBILE,
                                                                     ContactsContract.CommonDataKinds.Phone.TYPE_MMS,
                                                                     ContactsContract.CommonDataKinds.Phone.TYPE_WORK_MOBILE};

@@ -6,7 +6,7 @@ import android.provider.ContactsContract;
 import java.util.HashSet;
 
 
-public class GroupNotificationSoundsActivity extends CustomNotificationSoundsActivity{
+public class GroupNotificationSoundsActivity extends AbstractCustomNotificationSoundsActivity{
 
     @Override
     protected void populateLists(){
