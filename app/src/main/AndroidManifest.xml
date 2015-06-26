@@ -23,6 +23,7 @@
         <activity android:name=".ContactNotificationSoundsActivity"></activity>
         <activity android:name=".GroupNotificationSoundsActivity"></activity>
         <activity android:name=".GroupRingtonesActivity"></activity>
+        <activity android:name=".ChangeRingtonesActivity"></activity>
         <service android:name=".RingtonePlayingService"></service>
 
         <receiver android:name=".SMSReceiver"  android:exported="true" android:enabled="true">
