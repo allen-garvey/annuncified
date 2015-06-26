@@ -15,8 +15,8 @@ import android.widget.ArrayAdapter;
  */
 public abstract class AbstractChangeSoundsActivity extends ListActivity{
     //Declare UI elements
-    private String[] menuList;
-    private ArrayAdapter<String> menuAdapter;
+    protected String[] menuList;
+    protected ArrayAdapter<String> menuAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState){

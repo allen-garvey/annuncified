@@ -125,6 +125,10 @@ public class NotifyUtil{
         return getSharedPreferences(app).getString(app.getString(R.string.default_notification_sound_uri_shared_preferences_key), NOT_FOUND);
     }
 
+    public static void setDefaultNotificationPath(Context app, String newPath){
+        getSharedPreferences(app).edit().putString(app.getString(R.string.default_notification_sound_uri_shared_preferences_key), newPath).apply();
+    }
+
     public static Uri getDefaultNotificationSound(Context app){
         String defaultURIPath = NotifyUtil.getDefaultNotificationPath(app);
         if(!defaultURIPath.equals(NOT_FOUND)){
