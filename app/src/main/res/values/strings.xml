@@ -14,8 +14,11 @@
 
     <!-- Strings used in help layout-->
     <string name="about_button">About Annuncified</string>
-    <string name="help_text">To avoid multiple notification sounds when you get a SMS message, set your notification sound to none in
-    your device settings.</string>
+    <string name="help_text">
+        To prevent multiple ringtones when you receiver a call, set your ringtone to none(silent) in
+    your device settings.\n\nTo prevent multiple notification sounds when you receive a text message, set your notification sound to none(silent) in
+    your device settings.
+    </string>
 
     <!-- Strings used in about layout-->
     <string name="about_text">Annuncified &#169;2015 Allen Garvey\n\nReleased under the MIT License\ngithub.com/allen-garvey/annuncified</string>
